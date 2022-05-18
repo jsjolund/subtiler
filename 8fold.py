@@ -5,10 +5,11 @@ from matrix import Matrix3
 
 
 class Tile:
-    def __init__(self, name, vec, tr=Matrix3()):
+    def __init__(self, name, vec, locl=Matrix3(), glob=Matrix3()):
         self.vec = vec
         self.name = name
-        self.tr = tr
+        self.local = locl
+        self.glob = glob
 
     def vtra(self, px, py=0):
         if type(px) is tuple:
@@ -17,39 +18,43 @@ class Tile:
         res = [(v[0]+px, v[1]+py) for v in self.vec]
         return Tile(self.name, res)
 
+    def mul(self, vec, mat):
+        new_vec = []
+        for v in vec:
+            new_vec.append((v[0] * mat.val[0] + v[1] * mat.val[3] + mat.val[6],
+                            v[0] * mat.val[1] + v[1] * mat.val[4] + mat.val[7]))
+        return new_vec
+
     def transform(self):
-        mulVec = []
-        for v in self.vec:
-            x = v[0] * self.tr.val[0] + v[1] * self.tr.val[3] + self.tr.val[6]
-            y = v[0] * self.tr.val[1] + v[1] * self.tr.val[4] + self.tr.val[7]
-            mulVec.append((x, y))
-        return mulVec
+        tra_vec = self.mul(self.vec, self.local)
+        tra_vec = self.mul(tra_vec, self.glob)
+        return tra_vec
 
     def flipX(self):
-        self.tr.flipX()
+        self.local.flipX()
         return self
 
     def flipY(self):
-        self.tr.flipY()
+        self.local.flipY()
         return self
 
     def rot(self, t):
-        self.tr.rot(t)
+        self.local.rot(t)
         return self
 
     def scl(self, s):
-        self.tr.scl(s)
+        self.local.scl(s)
         return self
 
     def tra(self, x, y=0):
         if type(x) is tuple:
             y = x[1]
             x = x[0]
-        self.tr.tra(x, y)
+        self.local.tra(x, y)
         return self
 
     def cpy(self):
-        return Tile(self.name, deepcopy(self.vec), self.tr.cpy())
+        return Tile(self.name, deepcopy(self.vec), self.local.cpy(), self.glob.cpy())
 
     def __getitem__(self, key):
         return self.transform()[key]
@@ -64,7 +69,7 @@ def draw(tiles):
     for tile in tiles:
         color = 'white'
         match tile.name:
-            case 'T1': color = 'white'
+            case 'T1': color = 'yellow'
             case 'T2': color = 'blue'
             case 'T3': color = 'green'
             case 'T4': color = 'red'
@@ -131,11 +136,21 @@ T1s.append(T3.cpy().tra(T1s[-1][2]).scl(T1scl).flipX())
 T1s.append(T3.cpy().tra(T1s[-1][1]).scl(T1scl).flipY())
 T1s.append(T3.cpy().tra(T1s[3][1]).scl(T1scl).rot(-pi/2))
 T1s.append(T3.cpy().tra(T1s[-1][1]).scl(T1scl).rot(pi/2))
-# T1s.extend([t.cpy().rot(pi/2) for t in T1s])
-# T1s.extend([t.rot(pi) for t in T1s])
-# T1s.append(t1)
-# T1s = [t.rot(-theta) for t in T1s]
-draw(T1r)
+
+T1s2 = []
+for t in T1s:
+    t1 = t.cpy()
+    t2 = t.cpy()
+    t3 = t.cpy()
+    t1.glob.rot(pi/2)
+    t2.glob.rot(pi)
+    t3.glob.rot(-pi/2)
+    T1s2.extend([t1, t2, t3])
+T1s.extend(T1s2)
+T1s.append(T1.cpy().scl(T1scl))
+for t in T1s:
+    t.glob.rot(-theta)
+
 draw(T1s)
 
 # # draw(T2r)
