@@ -29,9 +29,11 @@ class Matrix3:
 
     def flipX(self):
         self.val[M11] = -self.val[M11]
+        return self
 
     def flipY(self):
         self.val[M00] = -self.val[M00]
+        return self
 
     def idt(self):
         self.val[M00] = 1
@@ -72,7 +74,10 @@ class Matrix3:
         return self
 
 
-    def tra(self, x, y):
+    def tra(self, x, y=0):
+        if type(x) is tuple:
+            y = x[1]
+            x = x[0]
         self.tmp[M00] = 1
         self.tmp[M10] = 0
         self.tmp[M20] = 0
