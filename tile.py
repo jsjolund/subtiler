@@ -3,11 +3,11 @@ from copy import deepcopy
 
 
 class Tile:
-    def __init__(self, name, vec, locl=Matrix3(), glob=Matrix3()):
+    def __init__(self, name, vec):
         self.vec = vec
         self.name = name
-        self.locl = locl
-        self.glob = glob
+        self.transforms = []
+        self.m = Matrix3()
 
     def mul(self, vec, mat):
         new_vec = []
@@ -17,9 +17,15 @@ class Tile:
         return new_vec
 
     def transform(self):
-        tra_vec = self.mul(self.vec, self.locl)
-        tra_vec = self.mul(tra_vec, self.glob)
+        tra_vec = deepcopy(self.vec)
+        for mat in self.transforms:
+            tra_vec = self.mul(tra_vec, mat)
         return tra_vec
+
+    def push(self):
+        self.transforms.append(self.m)
+        self.m = Matrix3()
+        return self
 
     def v_tra(self, px, py=0):
         if type(px) is tuple:
@@ -28,46 +34,34 @@ class Tile:
         res = [(v[0]+px, v[1]+py) for v in self.vec]
         return Tile(self.name, res)
 
-    def l_flipX(self):
-        self.locl.flipX()
+    def flipX(self):
+        self.m.flipX()
         return self
 
-    def l_flipY(self):
-        self.locl.flipY()
+    def flipY(self):
+        self.m.flipY()
         return self
 
-    def l_rot(self, t):
-        self.locl.rot(t)
+    def rot(self, t):
+        self.m.rot(t)
         return self
 
-    def l_scl(self, s):
-        self.locl.scl(s)
+    def scl(self, s):
+        self.m.scl(s)
         return self
 
-    def l_tra(self, x, y=0):
+    def tra(self, x, y=0):
         if type(x) is tuple:
             y = x[1]
             x = x[0]
-        self.locl.tra(x, y)
-        return self
-
-    def g_tra(self, x, y=0):
-        if type(x) is tuple:
-            y = x[1]
-            x = x[0]
-        self.glob.tra(x, y)
-        return self
-
-    def g_rot(self, t):
-        self.glob.rot(t)
-        return self
-
-    def g_flipX(self):
-        self.glob.flipX()
+        self.m.tra(x, y)
         return self
 
     def cpy(self):
-        return Tile(self.name, deepcopy(self.vec), self.locl.cpy(), self.glob.cpy())
+        t = Tile(self.name, deepcopy(self.vec))
+        t.transforms = [tr.cpy() for tr in self.transforms]
+        t.m = self.m.cpy()
+        return t
 
     def __getitem__(self, key):
         return self.transform()[key]
