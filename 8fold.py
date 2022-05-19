@@ -1,9 +1,9 @@
-import svgwrite
-from tile import Tile
-from math import sqrt, cos, acos, sin, pi
 import multiprocessing as mp
-from functools import partial
 import time
+import svgwrite
+from functools import partial
+from math import sqrt, cos, acos, sin, pi
+from tile import Tile
 
 dx = cos(pi/4)
 dy = sin(pi/4)
@@ -124,7 +124,23 @@ T4s.append(T3.cpy().tra(T4s[-1][2]).scl(T4scl).rot(pi/4).push())
 T4s.append(T4.cpy().tra(T4s[-1][2]).scl(T4scl).push())
 
 
-def substitute(input_tiles, iterations):
+def tiles_to_polygons(tiles, image_size):
+    if type(tiles) is Tile:
+        tiles = [tiles]
+    polygons = {}
+    for t in tiles:
+        # move & scale to fit document
+        scl = min(image_size[0], image_size[1])*0.4
+        t.tra(image_size[0]/2, image_size[1]/2).scl(scl).push()  
+        polygon = svgwrite.shapes.Polygon(points=t.transform())
+        if t.name in polygons:
+            polygons[t.name].append(polygon)
+        else:
+            polygons[t.name] = [polygon]
+    return polygons
+
+
+def substitute(input_tiles, iterations, image_size):
     subs_tiles = [input_tiles]
     for _ in range(0, iterations):
         Ti = []
@@ -139,41 +155,56 @@ def substitute(input_tiles, iterations):
                 tc.transforms.extend(t.transforms)
                 Ti.append(tc)
         subs_tiles = Ti
-    return tiles_to_polygons(subs_tiles)
+    return tiles_to_polygons(subs_tiles, image_size)
 
 
-def tiles_to_polygons(tiles):
-    if type(tiles) is Tile:
-        tiles = [tiles]
-    polygons = []
-    for t in tiles:
-        match t.name:
-            case 'T1': color = '#FE52F0'
-            case 'T2': color = '#FE52F0'
-            case 'T3': color = '#FE6152'
-            case 'T4': color = '#B752FE'
-        polygons.append(svgwrite.shapes.Polygon(
-            points=t.transform(),
-            id=t.name,
-            fill=color,
-            stroke='black',
-            stroke_width='0.00001px',
-            transform="translate(300,300),scale(230)"
-        ))
-    return polygons
+def draw_image(image_name, image_size, css, base_tile, iterations):
+    image = svgwrite.Drawing(image_name, size=image_size)
+    image.embed_stylesheet(css)
+    Tr = [t for t in base_tile]
+    with mp.Pool(mp.cpu_count()) as pool:
+        poly_maps = pool.map(partial(substitute, iterations=iterations, image_size=image_size), Tr)
+        merged_poly_map = {}
+        for poly_map in poly_maps:
+            for id, polygons in poly_map.items():
+                if id in merged_poly_map:
+                    merged_poly_map[id].extend(polygons)
+                else:
+                    merged_poly_map[id] = polygons
+        for id, polygons in merged_poly_map.items():
+            group = image.add(image.g(id=id))
+            for polygon in polygons:
+                group.add(polygon)
+    return image
 
 
-image = svgwrite.Drawing('test.svg', size=(600, 600))
-iterations = 1
 base_tile = T1s
+iterations = 1
+image_name = 'test.svg'
+image_size = (600, 600)
+css = """
+#T1, #T2, #T3, #T4 {
+  stroke: black;
+  stroke-width: 0.05px;
+}
+#T1 {
+  stroke: #8F0000;
+  fill: #FE52F0;
+}
+#T2 {
+  fill: #D686FE;
+}
+#T3 {
+  fill: #B752FE;
+}
+#T4 {
+  fill: #FE6152;
+  stroke-width: 0px;
+}
+""".replace('\n', '')
 
 tic = time.perf_counter()
-Tr = [t for t in base_tile]
-with mp.Pool(mp.cpu_count()) as pool:
-    results = pool.map(partial(substitute, iterations=iterations), Tr)
-    for polygons in results:
-        for polygon in polygons:
-            image.add(polygon)
+image = draw_image(image_name, image_size, css, base_tile, iterations)
 print(f"substitute took {time.perf_counter() - tic:0.4f} seconds")
 
 tic = time.perf_counter()
