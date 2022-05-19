@@ -2,26 +2,6 @@ import svgwrite
 from tile import Tile
 from math import sqrt, cos, acos, sin, pi
 
-image = svgwrite.Drawing('test.svg', size=(600, 600))
-
-
-def draw(tiles, force_color=None):
-    if type(tiles) is Tile:
-        tiles = [tiles]
-    for tile in tiles:
-        color = 'white'
-        match tile.name:
-            case 'T1': color = '#FE52F0'
-            case 'T2': color = '#FE52F0'
-            case 'T3': color = '#FE6152'
-            case 'T4': color = '#B752FE'
-        if force_color != None:
-            color = force_color
-        path = tile.transform()
-        image.add(image.polygon(path, id=tile.name, stroke='black', stroke_width='0.002px',
-                                fill=color, transform="translate(300,300),scale(230)"))
-
-
 dx = cos(pi/4)
 dy = sin(pi/4)
 
@@ -133,9 +113,27 @@ T4s.append(T3.cpy().tra(T4s[-1][3]).scl(T4scl).flipX().rot(pi/4).push())
 T4s.append(T3.cpy().tra(T4s[-1][2]).scl(T4scl).rot(pi/4).push())
 T4s.append(T4.cpy().tra(T4s[-1][2]).scl(T4scl).push())
 
-
+image = svgwrite.Drawing('test.svg', size=(600, 600))
 iterations = 1
 base_tile = T1s
+
+
+def draw(tiles, force_color=None):
+    if type(tiles) is Tile:
+        tiles = [tiles]
+    for tile in tiles:
+        color = 'white'
+        match tile.name:
+            case 'T1': color = '#FE52F0'
+            case 'T2': color = '#FE52F0'
+            case 'T3': color = '#FE6152'
+            case 'T4': color = '#B752FE'
+        if force_color != None:
+            color = force_color
+        path = tile.transform()
+        image.add(image.polygon(path, id=tile.name, stroke='black', stroke_width='0.002px',
+                                fill=color, transform="translate(300,300),scale(230)"))
+
 
 Tr = [t for t in base_tile]
 for i in range(0, iterations):
@@ -151,6 +149,8 @@ for i in range(0, iterations):
             tc.transforms.extend(t.transforms)
             Ti.append(tc)
     Tr = Ti
+
+
 draw(Tr)
 
 # draw(T1)
