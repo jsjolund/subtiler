@@ -152,7 +152,7 @@ def substitute(input_tiles, iterations, image_size):
                 case 'T4': Ts = T4s
             for ts in Ts:
                 tc = ts.cpy()
-                tc.transforms.extend(t.transforms)
+                tc.cmb_trans.mul_left(t.cmb_trans)
                 Ti.append(tc)
         subs_tiles = Ti
     return tiles_to_polygons(subs_tiles, image_size)

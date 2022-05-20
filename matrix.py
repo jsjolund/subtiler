@@ -49,18 +49,21 @@ class Matrix3:
 
     def mul(self, m):
         val = self.val
+        mval = m
+        if type(m) is Matrix3:
+            mval = m.val
 
-        v00 = val[M00] * m[M00] + val[M01] * m[M10] + val[M02] * m[M20]
-        v01 = val[M00] * m[M01] + val[M01] * m[M11] + val[M02] * m[M21]
-        v02 = val[M00] * m[M02] + val[M01] * m[M12] + val[M02] * m[M22]
+        v00 = val[M00] * mval[M00] + val[M01] * mval[M10] + val[M02] * mval[M20]
+        v01 = val[M00] * mval[M01] + val[M01] * mval[M11] + val[M02] * mval[M21]
+        v02 = val[M00] * mval[M02] + val[M01] * mval[M12] + val[M02] * mval[M22]
 
-        v10 = val[M10] * m[M00] + val[M11] * m[M10] + val[M12] * m[M20]
-        v11 = val[M10] * m[M01] + val[M11] * m[M11] + val[M12] * m[M21]
-        v12 = val[M10] * m[M02] + val[M11] * m[M12] + val[M12] * m[M22]
+        v10 = val[M10] * mval[M00] + val[M11] * mval[M10] + val[M12] * mval[M20]
+        v11 = val[M10] * mval[M01] + val[M11] * mval[M11] + val[M12] * mval[M21]
+        v12 = val[M10] * mval[M02] + val[M11] * mval[M12] + val[M12] * mval[M22]
 
-        v20 = val[M20] * m[M00] + val[M21] * m[M10] + val[M22] * m[M20]
-        v21 = val[M20] * m[M01] + val[M21] * m[M11] + val[M22] * m[M21]
-        v22 = val[M20] * m[M02] + val[M21] * m[M12] + val[M22] * m[M22]
+        v20 = val[M20] * mval[M00] + val[M21] * mval[M10] + val[M22] * mval[M20]
+        v21 = val[M20] * mval[M01] + val[M21] * mval[M11] + val[M22] * mval[M21]
+        v22 = val[M20] * mval[M02] + val[M21] * mval[M12] + val[M22] * mval[M22]
 
         val[M00] = v00
         val[M10] = v10
@@ -72,7 +75,36 @@ class Matrix3:
         val[M12] = v12
         val[M22] = v22
         return self
+    
+    def mul_left(self, m):
+        val = self.val
+        mval = m
+        if type(m) is Matrix3:
+            mval = m.val
 
+        v00 = mval[M00] * val[M00] + mval[M01] * val[M10] + mval[M02] * val[M20]
+        v01 = mval[M00] * val[M01] + mval[M01] * val[M11] + mval[M02] * val[M21]
+        v02 = mval[M00] * val[M02] + mval[M01] * val[M12] + mval[M02] * val[M22]
+
+        v10 = mval[M10] * val[M00] + mval[M11] * val[M10] + mval[M12] * val[M20]
+        v11 = mval[M10] * val[M01] + mval[M11] * val[M11] + mval[M12] * val[M21]
+        v12 = mval[M10] * val[M02] + mval[M11] * val[M12] + mval[M12] * val[M22]
+
+        v20 = mval[M20] * val[M00] + mval[M21] * val[M10] + mval[M22] * val[M20]
+        v21 = mval[M20] * val[M01] + mval[M21] * val[M11] + mval[M22] * val[M21]
+        v22 = mval[M20] * val[M02] + mval[M21] * val[M12] + mval[M22] * val[M22]
+
+        val[M00] = v00
+        val[M10] = v10
+        val[M20] = v20
+        val[M01] = v01
+        val[M11] = v11
+        val[M21] = v21
+        val[M02] = v02
+        val[M12] = v12
+        val[M22] = v22
+        return self
+	
 
     def tra(self, x, y=0):
         if type(x) is tuple:
