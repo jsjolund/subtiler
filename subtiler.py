@@ -3,7 +3,9 @@ import time
 import svgwrite
 from functools import partial
 from tile import Tile
-from eightfold import T1, substitutions
+import fourfold
+import eightfold
+
 
 def tiles_to_polygons(tiles, image_size):
     if type(tiles) is Tile:
@@ -12,7 +14,7 @@ def tiles_to_polygons(tiles, image_size):
     for t in tiles:
         # move & scale to fit document
         scl = min(image_size[0], image_size[1])*0.4
-        t.tra(image_size[0]/2, image_size[1]/2).scl(scl).push()  
+        t.tra(image_size[0]/2, image_size[1]/2).scl(scl).push()
         polygon = svgwrite.shapes.Polygon(points=t.transform())
         if t.name in polygons:
             polygons[t.name].append(polygon)
@@ -21,7 +23,7 @@ def tiles_to_polygons(tiles, image_size):
     return polygons
 
 
-def substitute(input_tiles, iterations, image_size):
+def substitute(input_tiles, substitutions, iterations, image_size):
     subs_tiles = [input_tiles]
     for _ in range(0, iterations):
         Ti = []
@@ -33,11 +35,13 @@ def substitute(input_tiles, iterations, image_size):
     return tiles_to_polygons(subs_tiles, image_size)
 
 
-def draw_image(image_name, image_size, css, base_tile, iterations):
+def draw_image(image_name, image_size, css, base_tile, substitutions, iterations):
+    tic = time.perf_counter()
     image = svgwrite.Drawing(image_name, size=image_size)
     image.embed_stylesheet(css)
     with mp.Pool(mp.cpu_count()) as pool:
-        poly_maps = pool.map(partial(substitute, iterations=iterations, image_size=image_size), [base_tile])
+        poly_maps = pool.map(partial(substitute, substitutions=substitutions,
+                             iterations=iterations, image_size=image_size), [base_tile])
         merged_poly_map = {}
         for poly_map in poly_maps:
             for id, polygons in poly_map.items():
@@ -49,17 +53,16 @@ def draw_image(image_name, image_size, css, base_tile, iterations):
             group = image.add(image.g(id=id))
             for polygon in polygons:
                 group.add(polygon)
+    print(f"substitute took {time.perf_counter() - tic:0.4f} seconds")
     return image
 
 
-base_tile = T1
-iterations = 2
-image_name = 'test.svg'
+
 image_size = (600, 600)
 css = """
 #T1, #T2, #T3, #T4 {
   stroke: black;
-  stroke-width: 0.05px;
+  stroke-width: 0.5px;
 }
 #T1 {
   stroke: #8F0000;
@@ -77,10 +80,16 @@ css = """
 }
 """.replace('\n', '')
 
-tic = time.perf_counter()
-image = draw_image(image_name, image_size, css, base_tile, iterations)
-print(f"substitute took {time.perf_counter() - tic:0.4f} seconds")
-
-tic = time.perf_counter()
+base_tile = fourfold.T1
+substitutions = fourfold.substitutions
+iterations = 5
+image_name = 'fourfold.svg'
+image = draw_image(image_name, image_size, css, base_tile, substitutions, iterations)
 image.save()
-print(f"save took {time.perf_counter() - tic:0.4f} seconds")
+
+base_tile = eightfold.T1
+substitutions = eightfold.substitutions
+iterations = 2
+image_name = 'eightfold.svg'
+image = draw_image(image_name, image_size, css, base_tile, substitutions, iterations)
+image.save()
