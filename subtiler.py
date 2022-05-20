@@ -1,10 +1,9 @@
-from email.mime import base
 import multiprocessing as mp
-import math
 import time
 import svgwrite
 from functools import partial
 from tile import Tile
+import threefold
 import fourfold
 import eightfold
 
@@ -36,10 +35,11 @@ def substitute(input_tiles, substitutions, iterations):
 
 def draw_image(image_name, image_size, css, base_tile, substitutions, iterations):
     tic = time.perf_counter()
+
     image = svgwrite.Drawing(image_name, size=image_size)
     image.embed_stylesheet(css)
-    minmax = base_tile.get_boundingbox()
 
+    minmax = base_tile.get_boundingbox()
     xscl = image_size[0] / abs(minmax[1][0] - minmax[0][0])
     yscl = image_size[1] / abs(minmax[1][1] - minmax[0][1])
     scl = min(xscl, yscl)
@@ -50,6 +50,7 @@ def draw_image(image_name, image_size, css, base_tile, substitutions, iterations
     with mp.Pool(mp.cpu_count()) as pool:
         poly_maps = pool.map(partial(
             substitute, substitutions=substitutions, iterations=iterations), [base_tile])
+        time.sleep(0.5)
         merged_poly_map = {}
         for poly_map in poly_maps:
             for id, polygons in poly_map.items():
@@ -61,6 +62,7 @@ def draw_image(image_name, image_size, css, base_tile, substitutions, iterations
             group = image.add(image.g(id=id))
             for polygon in polygons:
                 group.add(polygon)
+
     print(f"substitute took {time.perf_counter() - tic:0.4f} seconds")
     return image
 
@@ -86,6 +88,14 @@ css = """
   stroke-width: 0px;
 }
 """.replace('\n', '')
+
+base_tile = threefold.T1
+substitutions = threefold.substitutions
+iterations = 4
+image_name = 'threefold.svg'
+image = draw_image(image_name, image_size, css,
+                   base_tile, substitutions, iterations)
+image.save()
 
 base_tile = fourfold.T1
 substitutions = fourfold.substitutions

@@ -1,15 +1,11 @@
 from math import sin, atan, pi
 from tile import Tile
 
-# Prototile T1
 T1 = Tile('T1', [(0, 0), (0, -1), (1, -1), (1, 0)])
-
-# Prototile T2
 T2 = Tile('T2', [(0, 0), (1, 0), (1, -2)])
 
 theta = atan(1/2)
 
-# Scaling of substitution elements
 T1scl = sin(theta)
 T2scl = 1/(sin(theta)*5)
 
