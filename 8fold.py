@@ -11,19 +11,19 @@ dy = sin(pi/4)
 # Prototile T1
 T1 = Tile('T1', [(dx+1, 0), (dx*2+1, dy), (dx*2+1, dy+1),
                  (dx+1, dy*2+1), (dx, dy*2+1), (0, dy+1), (0, dy), (dx, 0)])
-T1 = T1.v_tra(-dx-0.5, -dy-0.5)  # Mid point at origin
+T1 = T1.tra_vec(-dx-0.5, -dy-0.5)  # Mid point at origin
 
 # Prototile T2
 T2 = Tile('T2', [(0, dy), (2, dy), (dx+2, 0)])
-T2 = T2.v_tra(0, -dy)  # Left bottom at origin
+T2 = T2.tra_vec(0, -dy)  # Left bottom at origin
 
 # Prototile T3
 T3 = Tile('T3', [(0, 1), (1, 0), (1, 1)])
-T3 = T3.v_tra(0, -1)  # Left bottom at origin
+T3 = T3.tra_vec(0, -1)  # Left bottom at origin
 
 # Prototile T4
 T4 = Tile('T4', [(0, dy), (dx, 0), (dx+1, 0), (1, dy)])
-T4 = T4.v_tra(0, -dy)  # Left bottom at origin
+T4 = T4.tra_vec(0, -dy)  # Left bottom at origin
 
 # Rotation of T1, T2
 xa = 2+dx
@@ -151,9 +151,7 @@ def substitute(input_tiles, iterations, image_size):
                 case 'T3': Ts = T3s
                 case 'T4': Ts = T4s
             for ts in Ts:
-                tc = ts.cpy()
-                tc.cmb_trans.mul_left(t.cmb_trans)
-                Ti.append(tc)
+                Ti.append(ts.cpy().inherit_transform(t))
         subs_tiles = Ti
     return tiles_to_polygons(subs_tiles, image_size)
 
@@ -161,9 +159,8 @@ def substitute(input_tiles, iterations, image_size):
 def draw_image(image_name, image_size, css, base_tile, iterations):
     image = svgwrite.Drawing(image_name, size=image_size)
     image.embed_stylesheet(css)
-    Tr = [t for t in base_tile]
     with mp.Pool(mp.cpu_count()) as pool:
-        poly_maps = pool.map(partial(substitute, iterations=iterations, image_size=image_size), Tr)
+        poly_maps = pool.map(partial(substitute, iterations=iterations, image_size=image_size), [base_tile])
         merged_poly_map = {}
         for poly_map in poly_maps:
             for id, polygons in poly_map.items():
@@ -178,8 +175,8 @@ def draw_image(image_name, image_size, css, base_tile, iterations):
     return image
 
 
-base_tile = T1s
-iterations = 1
+base_tile = T1
+iterations = 2
 image_name = 'test.svg'
 image_size = (600, 600)
 css = """

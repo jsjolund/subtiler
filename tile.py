@@ -17,16 +17,20 @@ class Tile:
                             v[0] * mat.val[1] + v[1] * mat.val[4] + mat.val[7]))
         return new_vec
 
+    def inherit_transform(self, tile):
+        self.cmb_trans.mul_left(tile.cmb_trans)
+        return self
+
     def push(self):
         self.cmb_trans.mul_left(self.trans)
         self.trans = Matrix3()
         return self
 
-    def v_tra(self, px, py=0):
-        if type(px) is tuple:
-            py = px[1]
-            px = px[0]
-        res = [(v[0]+px, v[1]+py) for v in self.vec]
+    def tra_vec(self, x, y=0):
+        if type(x) is tuple:
+            y = x[1]
+            x = x[0]
+        res = [(v[0]+x, v[1]+y) for v in self.vec]
         return Tile(self.name, res)
 
     def flipX(self):

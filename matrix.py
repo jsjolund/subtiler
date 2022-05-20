@@ -104,7 +104,6 @@ class Matrix3:
         val[M12] = v12
         val[M22] = v22
         return self
-	
 
     def tra(self, x, y=0):
         if type(x) is tuple:
