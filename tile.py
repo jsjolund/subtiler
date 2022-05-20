@@ -1,6 +1,6 @@
 from matrix import Matrix3
 from copy import deepcopy
-
+import math
 
 class Tile:
     def __init__(self, name, vec):
@@ -55,6 +55,22 @@ class Tile:
             x = x[0]
         self.trans.tra(x, y)
         return self
+
+    def get_boundingbox(self):
+        x_min = math.inf
+        x_max = -math.inf
+        y_min = math.inf
+        y_max = -math.inf
+        for v in self.transform():
+            if v[0] > x_max:
+                x_max = v[0]
+            if v[0] < x_min:
+                x_min = v[0]
+            if v[1] > y_max:
+                y_max = v[1]
+            if v[1] < y_min:
+                y_min = v[1]
+        return ((x_min, y_min), (x_max, y_max))
 
     def cpy(self):
         t = Tile(self.name, deepcopy(self.vec))
