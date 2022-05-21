@@ -14,23 +14,34 @@ def tiles_to_polygons(tiles):
     polygons = {}
     for t in tiles:
         polygon = svgwrite.shapes.Polygon(points=t.transform())
-        if t.name in polygons:
-            polygons[t.name].append(polygon)
+        title = t.name
+        if t.user_data:
+            title = f'{t.name} {t.user_data}'
+        if title in polygons:
+            polygons[title].append(polygon)
         else:
-            polygons[t.name] = [polygon]
+            polygons[title] = [polygon]
     return polygons
 
 
-def substitute(input_tiles, substitutions, iterations):
-    subs_tiles = [input_tiles]
+def substitute(tile, substitutions, iterations):
+    tiles = [tile]
     for _ in range(0, iterations):
         Ti = []
-        for t in subs_tiles:
+        for t in tiles:
             Ts = substitutions(t)
             for ts in Ts:
-                Ti.append(ts.cpy().inherit_transform(t))
-        subs_tiles = Ti
-    return tiles_to_polygons(subs_tiles)
+                new_t = ts.cpy().inherit_transform(t)
+                new_t.user_data = tile.user_data
+                Ti.append(new_t)
+        tiles = Ti
+    return tiles
+
+
+def process(tile, substitutions, iterations):
+    subs_tiles = substitute(tile, substitutions, iterations)
+    polygons = tiles_to_polygons(subs_tiles)
+    return polygons
 
 
 def draw_image(image_name, image_size, css, base_tile, substitutions, iterations):
@@ -47,19 +58,30 @@ def draw_image(image_name, image_size, css, base_tile, substitutions, iterations
     ty = image_size[1]/2 - (minmax[0][1] + minmax[1][1])*scl/2
     base_tile = base_tile.cpy().tra(tx, ty).scl(scl).push()
 
+    if iterations > 0:
+        subs_tiles = substitute(base_tile, substitutions, 1)
+        for i in range(0, len(subs_tiles)):
+            subs_tiles[i].user_data = f'C{i+1}'
+        iterations -= 1
+    else:
+        subs_tiles = [base_tile]
+
     with mp.Pool(mp.cpu_count()) as pool:
         poly_maps = pool.map(partial(
-            substitute, substitutions=substitutions, iterations=iterations), [base_tile])
-        time.sleep(0.5)
+            process, substitutions=substitutions, iterations=iterations), subs_tiles)
         merged_poly_map = {}
         for poly_map in poly_maps:
-            for id, polygons in poly_map.items():
-                if id in merged_poly_map:
-                    merged_poly_map[id].extend(polygons)
+            for title, polygons in poly_map.items():
+                if title in merged_poly_map:
+                    merged_poly_map[title].extend(polygons)
                 else:
-                    merged_poly_map[id] = polygons
-        for id, polygons in merged_poly_map.items():
-            group = image.add(image.g(id=id))
+                    merged_poly_map[title] = polygons
+        for title, polygons in merged_poly_map.items():
+            split = title.split()
+            id = split[0]
+            if len(split) > 1:
+                class_ = split[1]
+            group = image.add(image.g(id=id, class_=class_))
             for polygon in polygons:
                 group.add(polygon)
 
@@ -68,8 +90,100 @@ def draw_image(image_name, image_size, css, base_tile, substitutions, iterations
 
 
 image_size = (600, 600)
+
+base_tile = threefold.T1
+substitutions = threefold.substitutions
+iterations = 4
+image_name = 'svg/threefold.svg'
 css = """
-#T1, #T2, #T3, #T4 {
+* {
+  stroke: black;
+  stroke-width: 0.5px;
+}
+#T1.C1 {
+  fill: #00FF88;
+}
+#T2.C1 {
+  fill: #0037FF;
+}
+#T1.C2 {
+  fill: #00F7FF;
+}
+#T2.C2 {
+  fill: #00B7FF;
+}
+#T1.C3 {
+  fill: #00FFC8;
+}
+#T2.C3 {
+  fill: #0077FF;
+}
+#T1.C4 {
+  fill: #0AFF0D;
+}
+#T2.C4 {
+  fill: #0014A8;
+}
+"""
+draw_image(image_name, image_size, css, base_tile,
+           substitutions, iterations).save()
+
+
+base_tile = fourfold.T1
+substitutions = fourfold.substitutions
+iterations = 5
+image_name = 'svg/fourfold.svg'
+css = """
+* {
+  stroke-width: 1px;
+}
+#T1.C1 {
+  fill: #0CC0E4;
+  stroke: black;
+}
+#T2.C1 {
+  fill: #300CE4;
+  stroke: black;
+}
+#T1.C2 {
+  fill: #660CE4;
+  stroke: black;
+}
+#T2.C2 {
+  fill: #0C8AE4;
+  stroke: black;
+}
+#T1.C3 {
+  fill: #0C54E4;
+  stroke: black;
+}
+#T2.C3 {
+  fill: #0C1EE4;
+  stroke: black;
+}
+#T1.C4 {
+  fill: #9855F6;
+  stroke: black;
+}
+#T2.C4 {
+  fill: #558BF6;
+  stroke: black;
+}
+#T1.C5 {
+  fill: white;
+  stroke: black;
+}
+#T2.C5 {
+  fill: black;
+  stroke: white;
+}
+"""
+draw_image(image_name, image_size, css, base_tile,
+           substitutions, iterations).save()
+
+
+css = """
+* {
   stroke: black;
   stroke-width: 0.5px;
 }
@@ -87,28 +201,10 @@ css = """
   fill: #FE6152;
   stroke-width: 0px;
 }
-""".replace('\n', '')
-
-base_tile = threefold.T1
-substitutions = threefold.substitutions
-iterations = 4
-image_name = 'threefold.svg'
-image = draw_image(image_name, image_size, css,
-                   base_tile, substitutions, iterations)
-image.save()
-
-base_tile = fourfold.T1
-substitutions = fourfold.substitutions
-iterations = 5
-image_name = 'fourfold.svg'
-image = draw_image(image_name, image_size, css,
-                   base_tile, substitutions, iterations)
-image.save()
-
+"""
 base_tile = eightfold.T1
 substitutions = eightfold.substitutions
 iterations = 2
-image_name = 'eightfold.svg'
-image = draw_image(image_name, image_size, css,
-                   base_tile, substitutions, iterations)
-image.save()
+image_name = 'svg/eightfold.svg'
+draw_image(image_name, image_size, css, base_tile,
+           substitutions, iterations).save()
