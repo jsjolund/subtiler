@@ -11,13 +11,11 @@ def tiles_to_polygons(tiles):
     polygons = {}
     for t in tiles:
         polygon = svgwrite.shapes.Polygon(points=t.transform())
-        title = t.name
-        if t.user_data:
-            title = f'{t.name}-{t.user_data}'
-        if title in polygons:
-            polygons[title].append(polygon)
+        id = t.name
+        if id in polygons:
+            polygons[id].append(polygon)
         else:
-            polygons[title] = [polygon]
+            polygons[id] = [polygon]
     return polygons
 
 def overlap(amin, amax, bmin, bmax):
@@ -33,7 +31,6 @@ def substitute(tile, substitutions, iterations, image_size):
                 new_t = ts.cpy().inherit_transform(t)
                 aabb = new_t.get_boundingbox()
                 if overlap(aabb[0], aabb[1], (0, 0), image_size):
-                    new_t.user_data = tile.user_data
                     Ti.append(new_t)
         tiles = Ti
     return tiles
@@ -45,7 +42,7 @@ def process(tile, substitutions, iterations, image_size):
     return polygons
 
 
-def draw_image(image_name, image_size, css, base_tile, substitutions, iterations, focus=(0, 0, 1), use_depth=False):
+def draw_image(image_name, image_size, css, base_tile, substitutions, iterations, focus=(0, 0, 1)):
     tic = time.perf_counter()
 
     image = svgwrite.Drawing(image_name, size=image_size)
@@ -68,9 +65,6 @@ def draw_image(image_name, image_size, css, base_tile, substitutions, iterations
 
     if iterations > 0:
         subs_tiles = substitute(base_tile, substitutions, 1, image_size)
-        if use_depth:  # TODO: better color support
-            for i in range(0, len(subs_tiles)):
-                subs_tiles[i].user_data = f'C{i+1}'
         iterations -= 1
     else:
         subs_tiles = [base_tile]
@@ -80,18 +74,13 @@ def draw_image(image_name, image_size, css, base_tile, substitutions, iterations
             process, substitutions=substitutions, iterations=iterations, image_size=image_size), subs_tiles)
         merged_poly_map = {}
         for poly_map in poly_maps:
-            for title, polygons in poly_map.items():
-                if title in merged_poly_map:
-                    merged_poly_map[title].extend(polygons)
+            for id, polygons in poly_map.items():
+                if id in merged_poly_map:
+                    merged_poly_map[id].extend(polygons)
                 else:
-                    merged_poly_map[title] = polygons
-        for title, polygons in merged_poly_map.items():
-            split = title.split()
-            id = split[0]
-            class_ = 'none'
-            if len(split) > 1:
-                class_ = split[1]
-            group = image.add(image.g(id=id, class_=class_))
+                    merged_poly_map[id] = polygons
+        for id, polygons in merged_poly_map.items():
+            group = image.add(image.g(id=id))
             for polygon in polygons:
                 group.add(polygon)
 

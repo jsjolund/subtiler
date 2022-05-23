@@ -6,7 +6,6 @@ class Tile:
     def __init__(self, name, vec):
         self.vec = vec
         self.name = name
-        self.user_data = None
         self.cmb_trans = Matrix3()
         self.trans = Matrix3()
 
