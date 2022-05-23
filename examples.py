@@ -96,25 +96,25 @@ css = """
   stroke-width: 0.5px;
 }
 #T1 {
-  fill: #204883;
+  fill: #1f4384;
 }
 #T2 {
-  fill: #204883;
+  fill: #1f4384;
 }
 #T3 {
-  fill: #808ca0;
+  fill: #9d91a5;
 }
 #T4 {
-  fill: #c67b90;
+  fill: #f87d93;
 }
 #T5 {
-  fill: #8b87d5;
+  fill: #ab8be2;
 }
 #T6 {
-  fill: #cbedee;
+  fill: #ffffff;
 }
 #T7 {
-  fill: #82bf72;
+  fill: #a0cb70;
 }
 """
 
