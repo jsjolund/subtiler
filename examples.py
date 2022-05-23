@@ -45,7 +45,7 @@ css = """
 }
 """
 draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations, True).save()
+           substitutions, iterations, use_depth=True).save()
 
 ################################################################################
 
@@ -99,7 +99,7 @@ css = """
 }
 """
 draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations, True).save()
+           substitutions, iterations, use_depth=True).save()
 
 ################################################################################
 
@@ -135,7 +135,7 @@ css = """
 }
 """
 draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations).save()
+           substitutions, iterations, focus=(0, 0, 1)).save()
 
 ################################################################################
 

@@ -41,12 +41,13 @@ def process(tile, substitutions, iterations):
     return polygons
 
 
-def draw_image(image_name, image_size, css, base_tile, substitutions, iterations, use_depth=False):
+def draw_image(image_name, image_size, css, base_tile, substitutions, iterations, focus=(0, 0, 1), use_depth=False):
     tic = time.perf_counter()
 
     image = svgwrite.Drawing(image_name, size=image_size)
     image.embed_stylesheet(css)
 
+    # Center tiles in image and scale to max
     minmax = base_tile.get_boundingbox()
     xscl = image_size[0] / abs(minmax[1][0] - minmax[0][0])
     yscl = image_size[1] / abs(minmax[1][1] - minmax[0][1])
@@ -55,9 +56,15 @@ def draw_image(image_name, image_size, css, base_tile, substitutions, iterations
     ty = image_size[1]/2 - (minmax[0][1] + minmax[1][1])*scl/2
     base_tile = base_tile.cpy().tra(tx, ty).scl(scl).push()
 
+    # Focus on point and scale
+    scl = focus[2]
+    tx = (1/2 - 1/2*scl - focus[0]/2*scl)*image_size[0]
+    ty = (1/2 - 1/2*scl + focus[1]/2*scl)*image_size[1]
+    base_tile = base_tile.cpy().tra(tx, ty).scl(scl).push()
+
     if iterations > 0:
         subs_tiles = substitute(base_tile, substitutions, 1)
-        if use_depth: # TODO: better color support
+        if use_depth:  # TODO: better color support
             for i in range(0, len(subs_tiles)):
                 subs_tiles[i].user_data = f'C{i+1}'
         iterations -= 1
