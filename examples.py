@@ -1,3 +1,4 @@
+import random
 from subtiler import draw_image
 import fold3
 import fold4
@@ -5,6 +6,38 @@ import fold5
 import fold6
 import fold8
 
+# def rcolor():
+#     return "#"+''.join([random.choice('ABCDEF0123456789') for _ in range(6)])
+# rcss = f"""
+# * {{
+#   stroke: black;
+#   stroke-width: 0.5px;
+# }}
+# #T1 {{
+#   fill: {rcolor()};
+# }}
+# #T2 {{
+#   fill: {rcolor()};
+# }}
+# #T3 {{
+#   fill: {rcolor()};
+# }}
+# #T4 {{
+#   fill: {rcolor()};
+# }}
+# #T5 {{
+#   fill: {rcolor()};
+# }}
+# #T6 {{
+#   fill: {rcolor()};
+# }}
+# #T7 {{
+#   fill: {rcolor()};
+# }}
+# """
+# print(rcss)
+
+################################################################################
 
 image_size = (600, 600)
 
@@ -12,40 +45,23 @@ image_size = (600, 600)
 
 base_tile = fold3.T1
 substitutions = fold3.substitutions
-iterations = 4
+iterations = 6
 image_name = 'svg/fold3.svg'
 css = """
 * {
   stroke: black;
   stroke-width: 0.5px;
 }
-#T1-C1 {
-  fill: #00FF88;
+#T1 {
+  fill: #E8D050;
 }
-#T2-C1 {
-  fill: #0037FF;
+#T2 {
+  fill: #DE105B;
 }
-#T1-C2 {
-  fill: #00F7FF;
-}
-#T2-C2 {
-  fill: #00B7FF;
-}
-#T1-C3 {
-  fill: #00FFC8;
-}
-#T2-C3 {
-  fill: #0077FF;
-}
-#T1-C4 {
-  fill: #0AFF0D;
-}
-#T2-C4 {
-  fill: #0014A8;
-}
+#T
 """
 draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations, use_depth=True).save()
+           substitutions, iterations, focus=(0, 0, 8)).save()
 
 ################################################################################
 
@@ -55,51 +71,18 @@ iterations = 5
 image_name = 'svg/fold4.svg'
 css = """
 * {
-  stroke-width: 1px;
-}
-#T1-C1 {
-  fill: #0CC0E4;
   stroke: black;
+  stroke-width: 0.5px;
 }
-#T2-C1 {
-  fill: #300CE4;
-  stroke: black;
+#T1 {
+  fill: #D29CE5;
 }
-#T1-C2 {
-  fill: #660CE4;
-  stroke: black;
-}
-#T2-C2 {
-  fill: #0C8AE4;
-  stroke: black;
-}
-#T1-C3 {
-  fill: #0C54E4;
-  stroke: black;
-}
-#T2-C3 {
-  fill: #0C1EE4;
-  stroke: black;
-}
-#T1-C4 {
-  fill: #9855F6;
-  stroke: black;
-}
-#T2-C4 {
-  fill: #558BF6;
-  stroke: black;
-}
-#T1-C5 {
-  fill: white;
-  stroke: black;
-}
-#T2-C5 {
-  fill: black;
-  stroke: white;
+#T2 {
+  fill: #2F6AEA;
 }
 """
 draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations, use_depth=True).save()
+           substitutions, iterations).save()
 
 ################################################################################
 
@@ -113,35 +96,36 @@ css = """
   stroke-width: 0.5px;
 }
 #T1 {
-  fill: #FE52F0;
+  fill: #204883;
 }
 #T2 {
-  fill: #D686FE;
+  fill: #204883;
 }
 #T3 {
-  fill: #B752FE;
+  fill: #808ca0;
 }
 #T4 {
-  fill: #FE6152;
+  fill: #c67b90;
 }
 #T5 {
-  fill: #00FFC8;
+  fill: #8b87d5;
 }
 #T6 {
-  fill: #0077FF;
+  fill: #cbedee;
 }
 #T7 {
-  fill: #0AFF0D;
+  fill: #82bf72;
 }
 """
+
 draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations, focus=(-0.255, 0.465, 350)).save()
+           substitutions, iterations, focus=(-0.255, 0.460, 400)).save()
 
 ################################################################################
 
 base_tile = fold6.T1
 substitutions = fold6.substitutions
-iterations = 2
+iterations = 7
 image_name = 'svg/fold6.svg'
 css = """
 * {
@@ -149,28 +133,23 @@ css = """
   stroke-width: 0.5px;
 }
 #T1 {
-  stroke: #8F0000;
-  fill: #FE52F0;
+  fill: #8CDCC0;
 }
 #T2 {
-  fill: #D686FE;
+  fill: #704098;
 }
 #T3 {
-  fill: #B752FE;
-}
-#T4 {
-  fill: #FE6152;
-  stroke-width: 0px;
+  fill: #D8634D;
 }
 """
 draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations).save()
+           substitutions, iterations, focus=(-0.25, 0.460, 800)).save()
 
 ################################################################################
 
 base_tile = fold8.T1
 substitutions = fold8.substitutions
-iterations = 2
+iterations = 5
 image_name = 'svg/fold8.svg'
 css = """
 * {
@@ -178,19 +157,17 @@ css = """
   stroke-width: 0.5px;
 }
 #T1 {
-  stroke: #8F0000;
-  fill: #FE52F0;
+  fill: #000000;
 }
 #T2 {
-  fill: #D686FE;
+  fill: #b59592;
 }
 #T3 {
-  fill: #B752FE;
+  fill: #77545b;
 }
 #T4 {
-  fill: #FE6152;
-  stroke-width: 0px;
+  fill: #d91a25;
 }
 """
 draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations).save()
+           substitutions, iterations, focus=(-0.27, 0.360, 250)).save()
