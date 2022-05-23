@@ -20,8 +20,10 @@ def tiles_to_polygons(tiles):
             polygons[title] = [polygon]
     return polygons
 
+def overlap(amin, amax, bmin, bmax):
+    return amin[0] < bmax[0] and amax[0] > bmin[0] and amax[1] > bmin[1] and amin[1] < bmax[1]
 
-def substitute(tile, substitutions, iterations):
+def substitute(tile, substitutions, iterations, image_size):
     tiles = [tile]
     for _ in range(0, iterations):
         Ti = []
@@ -29,14 +31,16 @@ def substitute(tile, substitutions, iterations):
             Ts = substitutions(t)
             for ts in Ts:
                 new_t = ts.cpy().inherit_transform(t)
-                new_t.user_data = tile.user_data
-                Ti.append(new_t)
+                aabb = new_t.get_boundingbox()
+                if overlap(aabb[0], aabb[1], (0, 0), image_size):
+                    new_t.user_data = tile.user_data
+                    Ti.append(new_t)
         tiles = Ti
     return tiles
 
 
-def process(tile, substitutions, iterations):
-    subs_tiles = substitute(tile, substitutions, iterations)
+def process(tile, substitutions, iterations, image_size):
+    subs_tiles = substitute(tile, substitutions, iterations, image_size)
     polygons = tiles_to_polygons(subs_tiles)
     return polygons
 
@@ -63,7 +67,7 @@ def draw_image(image_name, image_size, css, base_tile, substitutions, iterations
     base_tile = base_tile.cpy().tra(tx, ty).scl(scl).push()
 
     if iterations > 0:
-        subs_tiles = substitute(base_tile, substitutions, 1)
+        subs_tiles = substitute(base_tile, substitutions, 1, image_size)
         if use_depth:  # TODO: better color support
             for i in range(0, len(subs_tiles)):
                 subs_tiles[i].user_data = f'C{i+1}'
@@ -73,7 +77,7 @@ def draw_image(image_name, image_size, css, base_tile, substitutions, iterations
 
     with mp.Pool(mp.cpu_count()) as pool:
         poly_maps = pool.map(partial(
-            process, substitutions=substitutions, iterations=iterations), subs_tiles)
+            process, substitutions=substitutions, iterations=iterations, image_size=image_size), subs_tiles)
         merged_poly_map = {}
         for poly_map in poly_maps:
             for title, polygons in poly_map.items():

@@ -105,7 +105,7 @@ draw_image(image_name, image_size, css, base_tile,
 
 base_tile = fold5.T1
 substitutions = fold5.substitutions
-iterations = 2
+iterations = 5
 image_name = 'svg/fold5.svg'
 css = """
 * {
@@ -135,7 +135,7 @@ css = """
 }
 """
 draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations, focus=(0, 0, 1)).save()
+           substitutions, iterations, focus=(-0.255, 0.465, 350)).save()
 
 ################################################################################
 
