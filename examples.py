@@ -1,11 +1,14 @@
 from subtiler import draw_image
 import fold3
 import fold4
+import fold5
 import fold6
 import fold8
 
 
 image_size = (600, 600)
+
+################################################################################
 
 base_tile = fold3.T1
 substitutions = fold3.substitutions
@@ -44,6 +47,7 @@ css = """
 draw_image(image_name, image_size, css, base_tile,
            substitutions, iterations, True).save()
 
+################################################################################
 
 base_tile = fold4.T1
 substitutions = fold4.substitutions
@@ -97,6 +101,44 @@ css = """
 draw_image(image_name, image_size, css, base_tile,
            substitutions, iterations, True).save()
 
+################################################################################
+
+base_tile = fold5.T3
+substitutions = fold5.substitutions
+iterations = 1
+image_name = 'svg/fold5.svg'
+css = """
+* {
+  stroke: black;
+  stroke-width: 0.5px;
+}
+#T1 {
+  fill: #FE52F0;
+}
+#T2 {
+  fill: #D686FE;
+}
+#T3 {
+  fill: #B752FE;
+}
+#T4 {
+  fill: #FE6152;
+}
+#T5 {
+  fill: #00FFC8;
+}
+#T6 {
+  fill: #0077FF;
+}
+#T7 {
+  fill: #0AFF0D;
+}
+"""
+draw_image(image_name, image_size, css, base_tile,
+           substitutions, iterations).save()
+
+################################################################################
+
 base_tile = fold6.T1
 substitutions = fold6.substitutions
 iterations = 2
@@ -124,6 +166,7 @@ css = """
 draw_image(image_name, image_size, css, base_tile,
            substitutions, iterations).save()
 
+################################################################################
 
 base_tile = fold8.T1
 substitutions = fold8.substitutions
