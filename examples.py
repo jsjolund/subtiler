@@ -103,9 +103,9 @@ draw_image(image_name, image_size, css, base_tile,
 
 ################################################################################
 
-base_tile = fold5.T3
+base_tile = fold5.T1
 substitutions = fold5.substitutions
-iterations = 1
+iterations = 2
 image_name = 'svg/fold5.svg'
 css = """
 * {
