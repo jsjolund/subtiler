@@ -1,27 +1,35 @@
 # Simple svg viewer which updates image after the file changes
 
-import sys, os
+import sys
+import os
 from PyQt5.QtSvg import QSvgWidget
 from PyQt5.QtWidgets import QApplication
 from PyQt5 import QtCore
 from PyQt5.QtCore import QRectF, QFileSystemWatcher
-from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QPainter, QColorConstants
 
 svg_file = sys.argv[1]
+
 
 class SvgWidget(QSvgWidget):
 
     def __init__(self, *args):
         QSvgWidget.__init__(self, *args)
+        self.setStyleSheet("background-color: white;")
 
     def paintEvent(self, event):
         renderer = self.renderer()
         if renderer != None:
             painter = QPainter(self)
-            size = renderer.defaultSize()
-            ratio = size.height()/size.width()
-            length = min(self.width(), self.height())
-            renderer.render(painter, QRectF(0, 0, length, ratio * length))
+            img = renderer.defaultSize()
+            ratio = img.height()/img.width()
+            length = min(self.width(), min(self.height(), img.height()))
+            length += max(0, self.width() - length)
+            length += min(0, self.height()/ratio - length)
+            rect = QRectF(0, 0, length, ratio*length)
+            renderer.render(painter, rect)
+            painter.fillRect(QRectF(0, rect.bottom(), self.width(), self.height() - rect.bottom()), QColorConstants.Black)
+            painter.fillRect(QRectF(rect.right(), 0, self.width() - rect.right(), rect.bottom()), QColorConstants.Black)
             painter.end()
 
 
