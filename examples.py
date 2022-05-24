@@ -58,7 +58,6 @@ css = """
 #T2 {
   fill: #DE105B;
 }
-#T
 """
 draw_image(image_name, image_size, css, base_tile,
            substitutions, iterations, focus=(0, 0, 8)).save()
@@ -117,7 +116,6 @@ css = """
   fill: #a0cb70;
 }
 """
-
 draw_image(image_name, image_size, css, base_tile,
            substitutions, iterations, focus=(-0.255, 0.460, 400)).save()
 

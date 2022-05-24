@@ -1,8 +1,9 @@
 from math import sqrt, cos, acos, sin, pi
 from tile import Tile
 
-dx = cos(pi/4)
-dy = sin(pi/4)
+alpha = 2*pi/8
+dx = cos(alpha)
+dy = sin(alpha)
 
 # Prototile T1
 T1 = Tile('T1', [(dx+1, 0), (dx*2+1, dy), (dx*2+1, dy+1),
@@ -34,9 +35,9 @@ T2r = T2.cpy().rot(theta).flipX().push()
 
 # Scaling of substitution elements
 T1scl = (T1r[4][1]-T1r[0][1])/(dx+2*sqrt(2)+1/sqrt(2)+3)
-T2scl = (T2r[0][1]-T2r[1][1])/(sqrt(2))
+T2scl = T1scl
 T3scl = 1/(5+2*sqrt(2))
-T4scl = dy/(5*dy+2)
+T4scl = T3scl
 
 T1s = []
 T1s.append(T2.cpy().tra(T1r[7]).scl(T1scl).push())
