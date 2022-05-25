@@ -21,15 +21,19 @@ class SvgWidget(QSvgWidget):
         renderer = self.renderer()
         if renderer != None:
             painter = QPainter(self)
-            img = renderer.defaultSize()
-            ratio = img.height()/img.width()
-            length = min(self.width(), min(self.height(), img.height()))
+            # Preserve svg aspect ratio while maximizing size
+            svg_size = renderer.defaultSize()
+            ratio = svg_size.height()/svg_size.width()
+            length = min(self.width(), self.height())
             length += max(0, self.width() - length)
             length += min(0, self.height()/ratio - length)
-            rect = QRectF(0, 0, length, ratio*length)
-            renderer.render(painter, rect)
-            painter.fillRect(QRectF(0, rect.bottom(), self.width(), self.height() - rect.bottom()), QColorConstants.Black)
-            painter.fillRect(QRectF(rect.right(), 0, self.width() - rect.right(), rect.bottom()), QColorConstants.Black)
+            svg_rect = QRectF(0, 0, length, ratio*length)
+            renderer.render(painter, svg_rect)
+            # Paint over geometry outsize svg boundary
+            svg_below = QRectF(0, svg_rect.bottom(), self.width(), self.height() - svg_rect.bottom())
+            svg_right = QRectF(svg_rect.right(), 0, self.width() - svg_rect.right(), svg_rect.bottom())
+            painter.fillRect(svg_below, QColorConstants.Black)
+            painter.fillRect(svg_right, QColorConstants.Black)
             painter.end()
 
 
