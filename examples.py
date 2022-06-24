@@ -60,8 +60,8 @@ css = """
   fill: #DE105B;
 }
 """
-# draw_image(image_name, image_size, css, base_tile,
-#            substitutions, iterations, focus=(0, 0, 8)).save()
+draw_image(image_name, image_size, css, base_tile,
+           substitutions, iterations, focus=(0, 0, 8)).save()
 draw_schematic(schematic_name, schematic_size(len(fold3.tiles)), css, fold3.tiles, substitutions).save()
 
 ################################################################################
@@ -83,8 +83,8 @@ css = """
   fill: #2F6AEA;
 }
 """
-# draw_image(image_name, image_size, css, base_tile,
-#            substitutions, iterations).save()
+draw_image(image_name, image_size, css, base_tile,
+           substitutions, iterations).save()
 draw_schematic(schematic_name, schematic_size(len(fold4.tiles)), css, fold4.tiles, substitutions).save()
 ################################################################################
 
@@ -120,8 +120,8 @@ css = """
   fill: #a0cb70;
 }
 """
-# draw_image(image_name, image_size, css, base_tile,
-#            substitutions, iterations, focus=(-0.255, 0.460, 400)).save()
+draw_image(image_name, image_size, css, base_tile,
+           substitutions, iterations, focus=(-0.255, 0.460, 400)).save()
 draw_schematic(schematic_name, schematic_size(len(fold5.tiles)), css, fold5.tiles, substitutions).save()
 ################################################################################
 
@@ -145,8 +145,8 @@ css = """
   fill: #D8634D;
 }
 """
-# draw_image(image_name, image_size, css, base_tile,
-#            substitutions, iterations, focus=(-0.25, 0.460, 800)).save()
+draw_image(image_name, image_size, css, base_tile,
+           substitutions, iterations, focus=(-0.25, 0.460, 800)).save()
 draw_schematic(schematic_name, schematic_size(len(fold6.tiles)), css, fold6.tiles, substitutions).save()
 
 ################################################################################
@@ -174,6 +174,6 @@ css = """
   fill: #d91a25;
 }
 """
-# draw_image(image_name, image_size, css, base_tile,
-#            substitutions, iterations, focus=(-0.27, 0.360, 250)).save()
+draw_image(image_name, image_size, css, base_tile,
+           substitutions, iterations, focus=(-0.27, 0.360, 250)).save()
 draw_schematic(schematic_name, schematic_size(len(fold8.tiles)), css, fold8.tiles, substitutions).save()
