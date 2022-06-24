@@ -1,5 +1,5 @@
 import random
-from subtiler import draw_image
+from subtiler import draw_image, draw_schematic
 import fold3
 import fold4
 import fold5
@@ -40,13 +40,14 @@ import fold8
 ################################################################################
 
 image_size = (600, 600)
-
+schematic_size = lambda num_tiles: (300, 150*num_tiles)
 ################################################################################
 
 base_tile = fold3.T1
 substitutions = fold3.substitutions
 iterations = 6
 image_name = 'svg/fold3.svg'
+schematic_name = 'svg/fold3_schematic.svg'
 css = """
 * {
   stroke: black;
@@ -59,8 +60,9 @@ css = """
   fill: #DE105B;
 }
 """
-draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations, focus=(0, 0, 8)).save()
+# draw_image(image_name, image_size, css, base_tile,
+#            substitutions, iterations, focus=(0, 0, 8)).save()
+draw_schematic(schematic_name, schematic_size(len(fold3.tiles)), css, fold3.tiles, substitutions).save()
 
 ################################################################################
 
@@ -68,6 +70,7 @@ base_tile = fold4.T1
 substitutions = fold4.substitutions
 iterations = 5
 image_name = 'svg/fold4.svg'
+schematic_name = 'svg/fold4_schematic.svg'
 css = """
 * {
   stroke: black;
@@ -80,15 +83,16 @@ css = """
   fill: #2F6AEA;
 }
 """
-draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations).save()
-
+# draw_image(image_name, image_size, css, base_tile,
+#            substitutions, iterations).save()
+draw_schematic(schematic_name, schematic_size(len(fold4.tiles)), css, fold4.tiles, substitutions).save()
 ################################################################################
 
 base_tile = fold5.T1
 substitutions = fold5.substitutions
 iterations = 5
 image_name = 'svg/fold5.svg'
+schematic_name = 'svg/fold5_schematic.svg'
 css = """
 * {
   stroke: black;
@@ -116,15 +120,16 @@ css = """
   fill: #a0cb70;
 }
 """
-draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations, focus=(-0.255, 0.460, 400)).save()
-
+# draw_image(image_name, image_size, css, base_tile,
+#            substitutions, iterations, focus=(-0.255, 0.460, 400)).save()
+draw_schematic(schematic_name, schematic_size(len(fold5.tiles)), css, fold5.tiles, substitutions).save()
 ################################################################################
 
 base_tile = fold6.T1
 substitutions = fold6.substitutions
 iterations = 7
 image_name = 'svg/fold6.svg'
+schematic_name = 'svg/fold6_schematic.svg'
 css = """
 * {
   stroke: black;
@@ -140,8 +145,9 @@ css = """
   fill: #D8634D;
 }
 """
-draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations, focus=(-0.25, 0.460, 800)).save()
+# draw_image(image_name, image_size, css, base_tile,
+#            substitutions, iterations, focus=(-0.25, 0.460, 800)).save()
+draw_schematic(schematic_name, schematic_size(len(fold6.tiles)), css, fold6.tiles, substitutions).save()
 
 ################################################################################
 
@@ -149,6 +155,7 @@ base_tile = fold8.T1
 substitutions = fold8.substitutions
 iterations = 5
 image_name = 'svg/fold8.svg'
+schematic_name = 'svg/fold8_schematic.svg'
 css = """
 * {
   stroke: black;
@@ -167,5 +174,6 @@ css = """
   fill: #d91a25;
 }
 """
-draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations, focus=(-0.27, 0.360, 250)).save()
+# draw_image(image_name, image_size, css, base_tile,
+#            substitutions, iterations, focus=(-0.27, 0.360, 250)).save()
+draw_schematic(schematic_name, schematic_size(len(fold8.tiles)), css, fold8.tiles, substitutions).save()

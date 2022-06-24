@@ -1,5 +1,4 @@
 import multiprocessing as mp
-import time
 import svgwrite
 import itertools
 from functools import partial
@@ -38,6 +37,17 @@ def substitute(input_tiles, substitutions, image_size):
     return output_tiles
 
 
+def merge_by_id(poly_maps):
+    merged_poly_map = {}
+    for poly_map in poly_maps:
+        for id, polygons in poly_map.items():
+            if id in merged_poly_map:
+                merged_poly_map[id].extend(polygons)
+            else:
+                merged_poly_map[id] = polygons
+    return merged_poly_map
+
+
 def process(base_tile, substitutions, iterations, image_size):
     if iterations == 0:
         return tiles_to_polygons([base_tile])
@@ -50,22 +60,10 @@ def process(base_tile, substitutions, iterations, image_size):
             chunk_size = max(1, int(len(subs_tiles_list)/mp.cpu_count()))
             subs_tiles = list(chunks(subs_tiles, chunk_size))
         poly_maps = pool.map(tiles_to_polygons, subs_tiles)
-    merged_poly_map = {}
-    for poly_map in poly_maps:
-        for id, polygons in poly_map.items():
-            if id in merged_poly_map:
-                merged_poly_map[id].extend(polygons)
-            else:
-                merged_poly_map[id] = polygons
-    return merged_poly_map
+    return merge_by_id(poly_maps)
 
 
-def draw_image(image_name, image_size, css, base_tile, substitutions, iterations, focus=(0, 0, 1)):
-    tic = time.perf_counter()
-
-    image = svgwrite.Drawing(image_name, size=image_size)
-    image.embed_stylesheet(css)
-
+def scale_tile(base_tile, image_size):
     # Center tiles in image and scale to max
     minmax = base_tile.get_boundingbox()
     xscl = image_size[0] / abs(minmax[1][0] - minmax[0][0])
@@ -73,19 +71,58 @@ def draw_image(image_name, image_size, css, base_tile, substitutions, iterations
     scl = min(xscl, yscl)
     tx = image_size[0]/2 - (minmax[0][0] + minmax[1][0])*scl/2
     ty = image_size[1]/2 - (minmax[0][1] + minmax[1][1])*scl/2
-    base_tile = base_tile.cpy().tra(tx, ty).scl(scl).push()
+    return base_tile.cpy().tra(tx, ty).scl(scl).push()
 
-    # Focus on point and scale
+
+def zoom_tile(base_tile, image_size, focus):
+    # Focus on point and scale (x, y, z). (0, 0, 1) is center of image, no scale.
+    # x and y are between -1 and 1
     scl = focus[2]
     tx = (1/2 - 1/2*scl - focus[0]/2*scl)*image_size[0]
     ty = (1/2 - 1/2*scl + focus[1]/2*scl)*image_size[1]
-    base_tile = base_tile.cpy().tra(tx, ty).scl(scl).push()
+    return base_tile.cpy().tra(tx, ty).scl(scl).push()
 
+
+def draw_image(image_name, image_size, css, base_tile, substitutions, iterations, focus=(0, 0, 1)):
+    base_tile = scale_tile(base_tile, image_size)
+    base_tile = zoom_tile(base_tile, image_size, focus)
     poly_map = process(base_tile, substitutions, iterations, image_size)
+
+    image = svgwrite.Drawing(image_name, size=image_size)
+    image.embed_stylesheet(css)
     for id, polygons in poly_map.items():
         group = image.add(image.g(id=id))
         for polygon in polygons:
             group.add(polygon)
+    return image
 
-    print(f"substitute took {time.perf_counter() - tic:0.4f} seconds")
+
+def draw_schematic(image_name, image_size, css, tiles, substitutions):
+    image = svgwrite.Drawing(image_name, size=image_size)
+    image.embed_stylesheet(css)
+
+    poly_maps = []
+    yoff = 0
+    for i in range(0, len(tiles)):
+        base_tile = tiles[i]
+        scl00 = 0.5
+        scl0 = image_size[0]*base_tile.scale*scl00
+        scl1 = image_size[0]*scl00
+
+        tile = base_tile.cpy()
+        tile = scale_tile(tile, (scl0, scl0))
+        tile = tile.tra(0, yoff).push()
+        poly_maps.append(process(tile, substitutions, 0, image_size))
+
+        tile = base_tile.cpy()
+        tile = scale_tile(tile.cpy(), (scl1, scl1))
+        tile = tile.tra(100, yoff).push()
+        poly_maps.append(process(tile, substitutions, 1, image_size))
+
+        yoff = tile.get_boundingbox()[1][1] + 5
+
+    for id, polygons in merge_by_id(poly_maps).items():
+        group = image.add(image.g(id=id))
+        for polygon in polygons:
+            group.add(polygon)
     return image

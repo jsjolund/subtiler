@@ -8,6 +8,7 @@ class Tile:
         self.name = name
         self.cmb_trans = Matrix3()
         self.trans = Matrix3()
+        self.scale = 0
 
     def transform(self):
         new_vec = []
@@ -76,6 +77,7 @@ class Tile:
         t = Tile(self.name, deepcopy(self.vec))
         t.cmb_trans = self.cmb_trans.cpy()
         t.trans = self.trans.cpy()
+        t.scale = self.scale
         return t
 
     def __getitem__(self, key):

@@ -9,19 +9,24 @@ Indagationes Mathematicae 2017, 28(1), pp. 120-131, [arxiv 1602.00518](https://a
 ## 3-fold
 
 ![3-fold](svg/fold3.svg)
+![3-fold](svg/fold3_schematic.svg)
 
 ## 4-fold
 
 ![4-fold](svg/fold4.svg)
+![3-fold](svg/fold4_schematic.svg)
 
 ## 5-fold
 
 ![5-fold](svg/fold5.svg)
+![3-fold](svg/fold5_schematic.svg)
 
 ## 6-fold
 
 ![6-fold](svg/fold6.svg)
+![3-fold](svg/fold6_schematic.svg)
 
 ## 8-fold
 
 ![8-fold](svg/fold8.svg)
+![3-fold](svg/fold8_schematic.svg)
