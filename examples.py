@@ -3,6 +3,7 @@ from subtiler import draw_image, draw_schematic
 import fold3
 import fold4
 import fold5
+import fold5n
 import fold6
 import fold8
 
@@ -182,3 +183,27 @@ draw_image(image_name, image_size, css, base_tile, substitutions,
            iterations, focus=(-0.27, 0.360, 250)).save()
 draw_schematic(schematic_name, schematic_width, css,
                fold8.tiles, substitutions).save()
+
+################################################################################
+
+base_tile = fold5n.T1
+substitutions = fold5n.substitutions
+iterations = 10
+image_name = 'svg/fold5n.svg'
+schematic_name = 'svg/fold5n_schematic.svg'
+css = """
+* {
+  stroke: black;
+  stroke-width: 0.5px;
+}
+#T1 {
+  fill: #562EE1;
+}
+#T2 {
+  fill: #D7CEEA;
+}
+"""
+draw_image(image_name, image_size, css, base_tile, substitutions,
+           iterations, focus=(0, 0, 5)).save()
+draw_schematic(schematic_name, schematic_width, css,
+               fold5n.tiles, substitutions).save()
