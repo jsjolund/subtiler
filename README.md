@@ -20,6 +20,11 @@
 ![6n-fold](svg/fold6n.svg)
 ![6n-fold](svg/fold6n_schematic.svg)
 
+## 6-fold alt2 [[2]](#1)
+
+![6n-fold](svg/fold6m.svg)
+![6n-fold](svg/fold6m_schematic.svg)
+
 ## 5-fold [[1]](#1)
 
 ![5-fold](svg/fold5.svg)
@@ -29,7 +34,6 @@
 
 ![6-fold](svg/fold6.svg)
 ![6-fold](svg/fold6_schematic.svg)
-
 
 ## 8-fold [[1]](#1)
 

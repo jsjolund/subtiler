@@ -6,6 +6,7 @@ import fold5
 import fold5n
 import fold6
 import fold6n
+import fold6m
 import fold8
 
 class Config:
@@ -214,6 +215,33 @@ conf6n = Config(
 """
 )
 
+conf6m = Config(
+    tileset=fold6m,
+    base_tile=fold6m.T4,
+    focus=(0, 0, 4),
+    iterations=9,
+    image_name='svg/fold6m.svg',
+    schematic_name='svg/fold6m_schematic.svg',
+    css="""
+* {
+  stroke: black;
+  stroke-width: 0.5px;
+}
+#T1 {
+  fill: #3A82DC;
+}
+#T2 {
+  fill: #E2220E;
+}
+#T3 {
+  fill: #81E8D7;
+}
+#T4 {
+  fill: #972202;
+}
+"""
+)
+
 conf3.draw()
 conf4.draw()
 conf5.draw()
@@ -221,3 +249,4 @@ conf6.draw()
 conf8.draw()
 conf5n.draw()
 conf6n.draw()
+conf6m.draw()
