@@ -102,6 +102,7 @@ def draw_schematic(image_name, image_size, css, tiles, substitutions):
     image.embed_stylesheet(css)
 
     poly_maps = []
+    arrows = []
     dy = 0
     for i in range(0, len(tiles)):
         base_tile = tiles[i]
@@ -125,16 +126,19 @@ def draw_schematic(image_name, image_size, css, tiles, substitutions):
 
         a0 = (80, dy+tileheight/2)
         a1 = (130, dy+tileheight/2)
-        image.add(image.polyline([a0, a1], stroke='grey', stroke_width=2))
+        arrows.append(image.polyline([a0, a1], stroke='black', stroke_width=2))
         head = [a1, (a1[0], a1[1]+4), (a1[0]+10, a1[1]), (a1[0], a1[1]-4)]
-        image.add(image.polygon(head, fill='grey', stroke_width=0))
+        arrows.append(image.polygon(head, fill='black'))
 
         dy += tileheight+10
 
+    image['height'] = dy-10
+    image.add(image.rect((0,0), (image['width'], image['height']),  fill='white' ))
+    for arrow in arrows:
+        image.add(arrow)
     for id, polygons in merge_by_id(poly_maps).items():
         group = image.add(image.g(id=id))
         for polygon in polygons:
             group.add(polygon)
 
-    image['height'] = dy
     return image
