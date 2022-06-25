@@ -125,9 +125,9 @@ def draw_schematic(image_name, image_size, css, tiles, substitutions):
 
         a0 = (80, dy+tileheight/2)
         a1 = (130, dy+tileheight/2)
-        image.add(image.polyline([a0, a1], stroke='black', stroke_width=2))
+        image.add(image.polyline([a0, a1], stroke='grey', stroke_width=2))
         head = [a1, (a1[0], a1[1]+4), (a1[0]+10, a1[1]), (a1[0], a1[1]-4)]
-        image.add(image.polygon(head, fill='black'))
+        image.add(image.polygon(head, fill='grey', stroke_width=0))
 
         dy += tileheight+10
 
