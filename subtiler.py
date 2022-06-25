@@ -122,7 +122,7 @@ def draw_schematic(image_name, image_size, css, tiles, substitutions):
         tile = tile.tra(0, dy-th-th2+tileheight/2).push()
         poly_maps.append(process(tile, substitutions, 0, image_size))
 
-        a0 = (80, dy+tileheight/2)
+        a0 = (100, dy+tileheight/2)
         a1 = (130, dy+tileheight/2)
         head = [a1, (a1[0], a1[1]+4), (a1[0]+10, a1[1]), (a1[0], a1[1]-4)]
         arrows.append(image.polyline([a0, a1], stroke='black', stroke_width=2))
