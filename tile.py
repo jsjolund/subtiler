@@ -57,7 +57,7 @@ class Tile:
         self.trans.tra(x, y)
         return self
 
-    def get_boundingbox(self):
+    def aabb(self):
         x_min = math.inf
         x_max = -math.inf
         y_min = math.inf

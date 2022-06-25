@@ -31,7 +31,7 @@ def substitute(input_tiles, substitutions, image_size):
         Ts = substitutions(t)
         for ts in Ts:
             new_t = ts.cpy().inherit_transform(t)
-            aabb = new_t.get_boundingbox()
+            aabb = new_t.aabb()
             if overlap(aabb[0], aabb[1], (0, 0), image_size):
                 output_tiles.append(new_t)
     return output_tiles
@@ -65,7 +65,7 @@ def process(base_tile, substitutions, iterations, image_size):
 
 def scale_tile(base_tile, image_size):
     # Center tiles in image and scale to max
-    minmax = base_tile.get_boundingbox()
+    minmax = base_tile.aabb()
     xscl = image_size[0] / abs(minmax[1][0] - minmax[0][0])
     yscl = image_size[1] / abs(minmax[1][1] - minmax[0][1])
     scl = min(xscl, yscl)
@@ -105,35 +105,34 @@ def draw_schematic(image_name, image_size, css, tiles, substitutions):
     arrows = []
     dy = 0
     for i in range(0, len(tiles)):
-        base_tile = tiles[i]
+        tile = tiles[i]
         scl00 = 0.5
-        scl0 = image_size[0]*base_tile.scale*scl00
+        scl0 = image_size[0]*tile.scale*scl00
         scl1 = image_size[0]*scl00
 
-        tile = base_tile.cpy()
         tile = scale_tile(tile.cpy(), (scl1, scl1))
-        tileheight = tile.get_boundingbox()[1][1]-tile.get_boundingbox()[0][1]
+        tileheight = tile.aabb()[1][1]-tile.aabb()[0][1]
         tile = scale_tile(tile.cpy(), (scl1, tileheight))
         tile = tile.tra(150, dy).push()
         poly_maps.append(process(tile, substitutions, 1, image_size))
 
-        tile = base_tile.cpy()
-        tile = scale_tile(tile, (scl0, scl0))
-        th = tile.get_boundingbox()[0][1]
-        th2 = (tile.get_boundingbox()[1][1]-tile.get_boundingbox()[0][1])/2
+        tile = scale_tile(tile.cpy(), (scl0, scl0))
+        th = tile.aabb()[0][1]
+        th2 = (tile.aabb()[1][1]-tile.aabb()[0][1])/2
         tile = tile.tra(0, dy-th-th2+tileheight/2).push()
         poly_maps.append(process(tile, substitutions, 0, image_size))
 
         a0 = (80, dy+tileheight/2)
         a1 = (130, dy+tileheight/2)
-        arrows.append(image.polyline([a0, a1], stroke='black', stroke_width=2))
         head = [a1, (a1[0], a1[1]+4), (a1[0]+10, a1[1]), (a1[0], a1[1]-4)]
+        arrows.append(image.polyline([a0, a1], stroke='black', stroke_width=2))
         arrows.append(image.polygon(head, fill='black'))
 
         dy += tileheight+10
 
     image['height'] = dy-10
-    image.add(image.rect((0,0), (image['width'], image['height']),  fill='white' ))
+    image.add(image.rect(
+        (0, 0), (image['width'], image['height']),  fill='white'))
     for arrow in arrows:
         image.add(arrow)
     for id, polygons in merge_by_id(poly_maps).items():
