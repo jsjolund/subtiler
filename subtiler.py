@@ -102,7 +102,7 @@ def draw_schematic(image_name, image_size, css, tiles, substitutions):
     image.embed_stylesheet(css)
 
     poly_maps = []
-    yoff = 0
+    dy = 0
     for i in range(0, len(tiles)):
         base_tile = tiles[i]
         scl00 = 0.5
@@ -110,19 +110,31 @@ def draw_schematic(image_name, image_size, css, tiles, substitutions):
         scl1 = image_size[0]*scl00
 
         tile = base_tile.cpy()
-        tile = scale_tile(tile, (scl0, scl0))
-        tile = tile.tra(0, yoff).push()
-        poly_maps.append(process(tile, substitutions, 0, image_size))
-
-        tile = base_tile.cpy()
         tile = scale_tile(tile.cpy(), (scl1, scl1))
-        tile = tile.tra(100, yoff).push()
+        tileheight = tile.get_boundingbox()[1][1]-tile.get_boundingbox()[0][1]
+        tile = scale_tile(tile.cpy(), (scl1, tileheight))
+        tile = tile.tra(150, dy).push()
         poly_maps.append(process(tile, substitutions, 1, image_size))
 
-        yoff = tile.get_boundingbox()[1][1] + 5
+        tile = base_tile.cpy()
+        tile = scale_tile(tile, (scl0, scl0))
+        th = tile.get_boundingbox()[0][1]
+        th2 = (tile.get_boundingbox()[1][1]-tile.get_boundingbox()[0][1])/2
+        tile = tile.tra(0, dy-th-th2+tileheight/2).push()
+        poly_maps.append(process(tile, substitutions, 0, image_size))
+
+        a0 = (80, dy+tileheight/2)
+        a1 = (130, dy+tileheight/2)
+        image.add(image.polyline([a0, a1], stroke='black', stroke_width=2))
+        head = [a1, (a1[0], a1[1]+4), (a1[0]+10, a1[1]), (a1[0], a1[1]-4)]
+        image.add(image.polygon(head, fill='black'))
+
+        dy += tileheight+10
 
     for id, polygons in merge_by_id(poly_maps).items():
         group = image.add(image.g(id=id))
         for polygon in polygons:
             group.add(polygon)
+
+    image['height'] = dy
     return image
