@@ -40,7 +40,7 @@ import fold8
 ################################################################################
 
 image_size = (600, 600)
-schematic_width = (300,2000)
+schematic_width = (300, 2000)
 ################################################################################
 
 base_tile = fold3.T1
@@ -60,9 +60,10 @@ css = """
   fill: #DE105B;
 }
 """
-# draw_image(image_name, image_size, css, base_tile,
-#            substitutions, iterations, focus=(0, 0, 8)).save()
-draw_schematic(schematic_name, schematic_width, css, fold3.tiles, substitutions).save()
+draw_image(image_name, image_size, css, base_tile,
+           substitutions, iterations, focus=(0, 0, 8)).save()
+draw_schematic(schematic_name, schematic_width, css,
+               fold3.tiles, substitutions).save()
 
 ################################################################################
 
@@ -83,9 +84,10 @@ css = """
   fill: #2F6AEA;
 }
 """
-# draw_image(image_name, image_size, css, base_tile,
-#            substitutions, iterations).save()
-draw_schematic(schematic_name, schematic_width, css, fold4.tiles, substitutions).save()
+draw_image(image_name, image_size, css, base_tile,
+           substitutions, iterations).save()
+draw_schematic(schematic_name, schematic_width, css,
+               fold4.tiles, substitutions).save()
 ################################################################################
 
 base_tile = fold5.T1
@@ -120,9 +122,10 @@ css = """
   fill: #a0cb70;
 }
 """
-# draw_image(image_name, image_size, css, base_tile,
-#            substitutions, iterations, focus=(-0.255, 0.460, 400)).save()
-draw_schematic(schematic_name, schematic_width, css, fold5.tiles, substitutions).save()
+draw_image(image_name, image_size, css, base_tile, substitutions,
+           iterations, focus=(-0.255, 0.460, 400)).save()
+draw_schematic(schematic_name, schematic_width, css,
+               fold5.tiles, substitutions).save()
 ################################################################################
 
 base_tile = fold6.T1
@@ -145,9 +148,10 @@ css = """
   fill: #D8634D;
 }
 """
-# draw_image(image_name, image_size, css, base_tile,
-#            substitutions, iterations, focus=(-0.25, 0.460, 800)).save()
-draw_schematic(schematic_name, schematic_width, css, fold6.tiles, substitutions).save()
+draw_image(image_name, image_size, css, base_tile, substitutions,
+           iterations, focus=(-0.25, 0.460, 800)).save()
+draw_schematic(schematic_name, schematic_width, css,
+               fold6.tiles, substitutions).save()
 
 ################################################################################
 
@@ -174,6 +178,7 @@ css = """
   fill: #d91a25;
 }
 """
-# draw_image(image_name, image_size, css, base_tile,
-#            substitutions, iterations, focus=(-0.27, 0.360, 250)).save()
-draw_schematic(schematic_name, schematic_width, css, fold8.tiles, substitutions).save()
+draw_image(image_name, image_size, css, base_tile, substitutions,
+           iterations, focus=(-0.27, 0.360, 250)).save()
+draw_schematic(schematic_name, schematic_width, css,
+               fold8.tiles, substitutions).save()
