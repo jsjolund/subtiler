@@ -5,51 +5,49 @@ import fold4
 import fold5
 import fold5n
 import fold6
+import fold6n
 import fold8
 
-# def rcolor():
-#     return "#"+''.join([random.choice('ABCDEF0123456789') for _ in range(6)])
-# rcss = f"""
-# * {{
-#   stroke: black;
-#   stroke-width: 0.5px;
-# }}
-# #T1 {{
-#   fill: {rcolor()};
-# }}
-# #T2 {{
-#   fill: {rcolor()};
-# }}
-# #T3 {{
-#   fill: {rcolor()};
-# }}
-# #T4 {{
-#   fill: {rcolor()};
-# }}
-# #T5 {{
-#   fill: {rcolor()};
-# }}
-# #T6 {{
-#   fill: {rcolor()};
-# }}
-# #T7 {{
-#   fill: {rcolor()};
-# }}
-# """
-# print(rcss)
+class Config:
+    def __init__(self, tileset, base_tile, focus, iterations, image_name, schematic_name, css):
+        self.tileset = tileset
+        self.base_tile = base_tile
+        self.focus = focus
+        self.iterations = iterations
+        self.image_name = image_name
+        self.schematic_name = schematic_name
+        self.css = css
+        self.image_size = (600, 600)
+        self.schematic_width = (300, 2000)
 
-################################################################################
+    def random_hex(self):
+        return "#"+''.join([random.choice('ABCDEF0123456789') for _ in range(6)])
 
-image_size = (600, 600)
-schematic_width = (300, 2000)
-################################################################################
+    def random_color_css(self):
+        css = f"* {{ stroke: black; stroke-width: 0.5px;}}"
+        num_colors = len(self.tileset.tiles)
+        for i in range(0, len(self.tileset.tiles)):
+            css += f"#T{i+1} {{ fill: {self.random_hex()};}} "
+        return css
 
-base_tile = fold3.T1
-substitutions = fold3.substitutions
-iterations = 6
-image_name = 'svg/fold3.svg'
-schematic_name = 'svg/fold3_schematic.svg'
-css = """
+    def draw(self, random_colors=False):
+        if random_colors:
+            self.css = self.random_color_css()
+            print(self.css)
+        draw_image(self.image_name, self.image_size, self.css, self.base_tile,
+                   self.tileset.substitutions, self.iterations, self.focus).save()
+        draw_schematic(self.schematic_name, self.schematic_width, self.css,
+                       self.tileset.tiles, self.tileset.substitutions).save()
+
+
+conf3 = Config(
+    tileset=fold3,
+    base_tile=fold3.T1,
+    focus=(0, 0, 8),
+    iterations=6,
+    image_name='svg/fold3.svg',
+    schematic_name='svg/fold3_schematic.svg',
+    css="""
 * {
   stroke: black;
   stroke-width: 0.5px;
@@ -61,19 +59,16 @@ css = """
   fill: #DE105B;
 }
 """
-draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations, focus=(0, 0, 8)).save()
-draw_schematic(schematic_name, schematic_width, css,
-               fold3.tiles, substitutions).save()
+)
 
-################################################################################
-
-base_tile = fold4.T1
-substitutions = fold4.substitutions
-iterations = 5
-image_name = 'svg/fold4.svg'
-schematic_name = 'svg/fold4_schematic.svg'
-css = """
+conf4 = Config(
+    tileset=fold4,
+    base_tile=fold4.T1,
+    focus=(0, 0, 1),
+    iterations=5,
+    image_name='svg/fold4.svg',
+    schematic_name='svg/fold4_schematic.svg',
+    css="""
 * {
   stroke: black;
   stroke-width: 0.5px;
@@ -85,18 +80,16 @@ css = """
   fill: #2F6AEA;
 }
 """
-draw_image(image_name, image_size, css, base_tile,
-           substitutions, iterations).save()
-draw_schematic(schematic_name, schematic_width, css,
-               fold4.tiles, substitutions).save()
-################################################################################
+)
 
-base_tile = fold5.T1
-substitutions = fold5.substitutions
-iterations = 5
-image_name = 'svg/fold5.svg'
-schematic_name = 'svg/fold5_schematic.svg'
-css = """
+conf5 = Config(
+    tileset=fold5,
+    base_tile=fold5.T1,
+    focus=(-0.255, 0.460, 400),
+    iterations=5,
+    image_name='svg/fold5.svg',
+    schematic_name='svg/fold5_schematic.svg',
+    css="""
 * {
   stroke: black;
   stroke-width: 0.5px;
@@ -123,18 +116,16 @@ css = """
   fill: #a0cb70;
 }
 """
-draw_image(image_name, image_size, css, base_tile, substitutions,
-           iterations, focus=(-0.255, 0.460, 400)).save()
-draw_schematic(schematic_name, schematic_width, css,
-               fold5.tiles, substitutions).save()
-################################################################################
+)
 
-base_tile = fold6.T1
-substitutions = fold6.substitutions
-iterations = 7
-image_name = 'svg/fold6.svg'
-schematic_name = 'svg/fold6_schematic.svg'
-css = """
+conf6 = Config(
+    tileset=fold6,
+    base_tile=fold6.T1,
+    focus=(-0.25, 0.460, 800),
+    iterations=7,
+    image_name='svg/fold6.svg',
+    schematic_name='svg/fold6_schematic.svg',
+    css="""
 * {
   stroke: black;
   stroke-width: 0.5px;
@@ -149,19 +140,16 @@ css = """
   fill: #D8634D;
 }
 """
-draw_image(image_name, image_size, css, base_tile, substitutions,
-           iterations, focus=(-0.25, 0.460, 800)).save()
-draw_schematic(schematic_name, schematic_width, css,
-               fold6.tiles, substitutions).save()
+)
 
-################################################################################
-
-base_tile = fold8.T1
-substitutions = fold8.substitutions
-iterations = 5
-image_name = 'svg/fold8.svg'
-schematic_name = 'svg/fold8_schematic.svg'
-css = """
+conf8 = Config(
+    tileset=fold8,
+    base_tile=fold8.T1,
+    focus=(-0.27, 0.360, 250),
+    iterations=5,
+    image_name='svg/fold8.svg',
+    schematic_name='svg/fold8_schematic.svg',
+    css="""
 * {
   stroke: black;
   stroke-width: 0.5px;
@@ -179,19 +167,16 @@ css = """
   fill: #d91a25;
 }
 """
-draw_image(image_name, image_size, css, base_tile, substitutions,
-           iterations, focus=(-0.27, 0.360, 250)).save()
-draw_schematic(schematic_name, schematic_width, css,
-               fold8.tiles, substitutions).save()
+)
 
-################################################################################
-
-base_tile = fold5n.T1
-substitutions = fold5n.substitutions
-iterations = 10
-image_name = 'svg/fold5n.svg'
-schematic_name = 'svg/fold5n_schematic.svg'
-css = """
+conf5n = Config(
+    tileset=fold5n,
+    base_tile=fold5n.T1,
+    focus=(0, 0, 5),
+    iterations=10,
+    image_name='svg/fold5n.svg',
+    schematic_name='svg/fold5n_schematic.svg',
+    css="""
 * {
   stroke: black;
   stroke-width: 0.5px;
@@ -203,7 +188,36 @@ css = """
   fill: #D7CEEA;
 }
 """
-draw_image(image_name, image_size, css, base_tile, substitutions,
-           iterations, focus=(0, 0, 5)).save()
-draw_schematic(schematic_name, schematic_width, css,
-               fold5n.tiles, substitutions).save()
+)
+
+conf6n = Config(
+    tileset=fold6n,
+    base_tile=fold6n.T1,
+    focus=(0, 0, 12),
+    iterations=10,
+    image_name='svg/fold6n.svg',
+    schematic_name='svg/fold6n_schematic.svg',
+    css="""
+* {
+  stroke: black;
+  stroke-width: 0.5px;
+}
+#T1 {
+  fill: #F5425E;
+}
+#T2 {
+  fill: #85BC54;
+}
+#T3 {
+  fill: #C6C7BC;
+}
+"""
+)
+
+conf3.draw()
+conf4.draw()
+conf5.draw()
+conf6.draw()
+conf8.draw()
+conf5n.draw()
+conf6n.draw()
