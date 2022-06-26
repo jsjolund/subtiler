@@ -30,7 +30,7 @@ class Config:
         css = f"* {{ stroke: black; stroke-width: 0.5px;}}"
         num_colors = len(self.tileset.tiles)
         for i in range(0, len(self.tileset.tiles)):
-            css += f"#T{i+1} {{ fill: {self.random_hex()};}} "
+            css += f"\n#T{i+1} {{ fill: {self.random_hex()}; }} "
         return css
 
     def draw(self, random_colors=False):
@@ -51,16 +51,10 @@ conf3 = Config(
     image_name='svg/fold3.svg',
     schematic_name='svg/fold3_schematic.svg',
     css="""
-* {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-#T1 {
-  fill: #E8D050;
-}
-#T2 {
-  fill: #DE105B;
-}""")
+* { stroke: black; stroke-width: 0.5px; }
+#T1 { fill: #E8D050; }
+#T2 { fill: #DE105B; }
+""")
 
 conf4 = Config(
     tileset=fold4,
@@ -70,16 +64,10 @@ conf4 = Config(
     image_name='svg/fold4.svg',
     schematic_name='svg/fold4_schematic.svg',
     css="""
-* {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-#T1 {
-  fill: #D29CE5;
-}
-#T2 {
-  fill: #2F6AEA;
-}""")
+* { stroke: black; stroke-width: 0.5px; }
+#T1 { fill: #D29CE5; }
+#T2 { fill: #2F6AEA; }
+""")
 
 conf5a = Config(
     tileset=fold5a,
@@ -89,31 +77,15 @@ conf5a = Config(
     image_name='svg/fold5a.svg',
     schematic_name='svg/fold5a_schematic.svg',
     css="""
-* {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-#T1 {
-  fill: #1f4384;
-}
-#T2 {
-  fill: #1f4384;
-}
-#T3 {
-  fill: #9d91a5;
-}
-#T4 {
-  fill: #f87d93;
-}
-#T5 {
-  fill: #ab8be2;
-}
-#T6 {
-  fill: #ffffff;
-}
-#T7 {
-  fill: #a0cb70;
-}""")
+* { stroke: black; stroke-width: 0.5px; }
+#T1 { fill: #1f4384; }
+#T2 { fill: #1f4384; }
+#T3 { fill: #9d91a5; }
+#T4 { fill: #f87d93; }
+#T5 { fill: #ab8be2; }
+#T6 { fill: #ffffff; }
+#T7 { fill: #a0cb70; }
+""")
 
 conf6a = Config(
     tileset=fold6a,
@@ -123,19 +95,10 @@ conf6a = Config(
     image_name='svg/fold6a.svg',
     schematic_name='svg/fold6a_schematic.svg',
     css="""
-* {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-#T1 {
-  fill: #8CDCC0;
-}
-#T2 {
-  fill: #704098;
-}
-#T3 {
-  fill: #D8634D;
-}""")
+* { stroke: black; stroke-width: 0.5px; }
+#T1 { fill: #8CDCC0; }
+#T2 { fill: #704098; }
+#T3 { fill: #D8634D; }""")
 
 conf8 = Config(
     tileset=fold8,
@@ -145,22 +108,12 @@ conf8 = Config(
     image_name='svg/fold8.svg',
     schematic_name='svg/fold8_schematic.svg',
     css="""
-* {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-#T1 {
-  fill: #000000;
-}
-#T2 {
-  fill: #b59592;
-}
-#T3 {
-  fill: #77545b;
-}
-#T4 {
-  fill: #d91a25;
-}""")
+* { stroke: black; stroke-width: 0.5px; }
+#T1 { fill: #000000; }
+#T2 { fill: #b59592; }
+#T3 { fill: #77545b; }
+#T4 { fill: #d91a25; }
+""")
 
 conf5b = Config(
     tileset=fold5b,
@@ -170,16 +123,10 @@ conf5b = Config(
     image_name='svg/fold5b.svg',
     schematic_name='svg/fold5b_schematic.svg',
     css="""
-* {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-#T1 {
-  fill: #562EE1;
-}
-#T2 {
-  fill: #D7CEEA;
-}""")
+* { stroke: black; stroke-width: 0.5px; }
+#T1 { fill: #562EE1; }
+#T2 { fill: #D7CEEA; }
+""")
 
 conf6b = Config(
     tileset=fold6b,
@@ -189,19 +136,11 @@ conf6b = Config(
     image_name='svg/fold6b.svg',
     schematic_name='svg/fold6b_schematic.svg',
     css="""
-* {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-#T1 {
-  fill: #F5425E;
-}
-#T2 {
-  fill: #85BC54;
-}
-#T3 {
-  fill: #C6C7BC;
-}""")
+* { stroke: black; stroke-width: 0.5px; }
+#T1 { fill: #F5425E; }
+#T2 { fill: #85BC54; }
+#T3 { fill: #C6C7BC; }
+""")
 
 conf6c = Config(
     tileset=fold6c,
@@ -211,22 +150,12 @@ conf6c = Config(
     image_name='svg/fold6c.svg',
     schematic_name='svg/fold6c_schematic.svg',
     css="""
-* {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-#T1 {
-  fill: #3A82DC;
-}
-#T2 {
-  fill: #E2220E;
-}
-#T3 {
-  fill: #81E8D7;
-}
-#T4 {
-  fill: #972202;
-}""")
+* { stroke: black; stroke-width: 0.5px; }
+#T1 { fill: #3A82DC; }
+#T2 { fill: #E2220E; }
+#T3 { fill: #81E8D7; }
+#T4 { fill: #972202; }
+""")
 
 conf7 = Config(
     tileset=fold7,
@@ -236,19 +165,11 @@ conf7 = Config(
     image_name='svg/fold7.svg',
     schematic_name='svg/fold7_schematic.svg',
     css="""
-* {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-#T1 {
-  fill: #41d2ba;
-}
-#T2 {
-  fill: #ffe777;
-}
-#T3 {
-  fill: #465b52;
-}""")
+* { stroke: black; stroke-width: 0.5px; }
+#T1 { fill: #41d2ba; }
+#T2 { fill: #ffe777; }
+#T3 { fill: #465b52; }
+""")
 
 conf3.draw()
 conf4.draw()
