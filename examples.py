@@ -1,15 +1,6 @@
 import random
 from subtiler import draw_image, draw_schematic
-import fold3
-import fold4
-import fold5a
-import fold5b
-import fold6a
-import fold6b
-import fold6c
-import fold6d
-import fold7
-import fold8
+from tilesets import fold3, fold4, fold5a, fold5b, fold6a, fold6b, fold6c, fold6d, fold7, fold8
 
 
 class Config:
@@ -40,8 +31,10 @@ class Config:
             print(self.css)
         draw_image(self.image_name, self.image_size, self.css, self.base_tile,
                    self.tileset.substitutions, self.iterations, self.focus).save()
+        print(f'Wrote: {self.image_name}')
         draw_schematic(self.schematic_name, self.schematic_width, self.css,
                        self.tileset.tiles, self.tileset.substitutions).save()
+        print(f'Wrote: {self.schematic_name}')
 
 
 conf3 = Config(
