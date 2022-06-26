@@ -2,6 +2,7 @@ from matrix import Matrix3
 from copy import deepcopy
 import math
 
+
 class Tile:
     def __init__(self, name, vec):
         self.vec = vec
@@ -82,3 +83,6 @@ class Tile:
 
     def __getitem__(self, key):
         return self.transform()[key]
+
+    def __repr__(self) -> str:
+        return f'{self.name}: ' + ','.join([f'({v[0]}, {v[1]})' for v in self.transform()])
