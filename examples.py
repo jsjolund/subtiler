@@ -7,7 +7,9 @@ import fold5n
 import fold6
 import fold6n
 import fold6m
+import fold7
 import fold8
+
 
 class Config:
     def __init__(self, tileset, base_tile, focus, iterations, image_name, schematic_name, css):
@@ -58,9 +60,7 @@ conf3 = Config(
 }
 #T2 {
   fill: #DE105B;
-}
-"""
-)
+}""")
 
 conf4 = Config(
     tileset=fold4,
@@ -79,9 +79,7 @@ conf4 = Config(
 }
 #T2 {
   fill: #2F6AEA;
-}
-"""
-)
+}""")
 
 conf5 = Config(
     tileset=fold5,
@@ -115,9 +113,7 @@ conf5 = Config(
 }
 #T7 {
   fill: #a0cb70;
-}
-"""
-)
+}""")
 
 conf6 = Config(
     tileset=fold6,
@@ -139,9 +135,7 @@ conf6 = Config(
 }
 #T3 {
   fill: #D8634D;
-}
-"""
-)
+}""")
 
 conf8 = Config(
     tileset=fold8,
@@ -166,9 +160,7 @@ conf8 = Config(
 }
 #T4 {
   fill: #d91a25;
-}
-"""
-)
+}""")
 
 conf5n = Config(
     tileset=fold5n,
@@ -187,9 +179,7 @@ conf5n = Config(
 }
 #T2 {
   fill: #D7CEEA;
-}
-"""
-)
+}""")
 
 conf6n = Config(
     tileset=fold6n,
@@ -211,9 +201,7 @@ conf6n = Config(
 }
 #T3 {
   fill: #C6C7BC;
-}
-"""
-)
+}""")
 
 conf6m = Config(
     tileset=fold6m,
@@ -238,9 +226,29 @@ conf6m = Config(
 }
 #T4 {
   fill: #972202;
+}""")
+
+conf7 = Config(
+    tileset=fold7,
+    base_tile=fold7.T3,
+    focus=(0, 0, 50),
+    iterations=7,
+    image_name='svg/fold7.svg',
+    schematic_name='svg/fold7_schematic.svg',
+    css="""
+* {
+  stroke: black;
+  stroke-width: 0.5px;
 }
-"""
-)
+#T1 {
+  fill: #41d2ba;
+}
+#T2 {
+  fill: #ffe777;
+}
+#T3 {
+  fill: #465b52;
+}""")
 
 conf3.draw()
 conf4.draw()
@@ -250,3 +258,4 @@ conf8.draw()
 conf5n.draw()
 conf6n.draw()
 conf6m.draw()
+conf7.draw()
