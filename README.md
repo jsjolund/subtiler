@@ -12,28 +12,28 @@
 
 ## 5-fold alt [[2]](#2)
 
-![5n-fold](svg/fold5n.svg)
-![5n-fold](svg/fold5n_schematic.svg)
+![5b-fold](svg/fold5b.svg)
+![5b-fold](svg/fold5b_schematic.svg)
 
 ## 6-fold alt [[2]](#2)
 
-![6n-fold](svg/fold6n.svg)
-![6n-fold](svg/fold6n_schematic.svg)
+![6b-fold](svg/fold6b.svg)
+![6b-fold](svg/fold6b_schematic.svg)
 
 ## 6-fold alt2 [[2]](#2)
 
-![6n-fold](svg/fold6m.svg)
-![6n-fold](svg/fold6m_schematic.svg)
+![6c-fold](svg/fold6c.svg)
+![6c-fold](svg/fold6c_schematic.svg)
 
 ## 5-fold [[1]](#1)
 
-![5-fold](svg/fold5.svg)
-![5-fold](svg/fold5_schematic.svg)
+![5-fold](svg/fold5a.svg)
+![5-fold](svg/fold5a_schematic.svg)
 
 ## 6-fold [[1]](#1)
 
-![6-fold](svg/fold6.svg)
-![6-fold](svg/fold6_schematic.svg)
+![6-fold](svg/fold6a.svg)
+![6-fold](svg/fold6a_schematic.svg)
 
 ## 7-fold [[2]](#2)
 

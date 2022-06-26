@@ -2,11 +2,11 @@ import random
 from subtiler import draw_image, draw_schematic
 import fold3
 import fold4
-import fold5
-import fold5n
-import fold6
-import fold6n
-import fold6m
+import fold5a
+import fold5b
+import fold6a
+import fold6b
+import fold6c
 import fold7
 import fold8
 
@@ -81,13 +81,13 @@ conf4 = Config(
   fill: #2F6AEA;
 }""")
 
-conf5 = Config(
-    tileset=fold5,
-    base_tile=fold5.T1,
+conf5a = Config(
+    tileset=fold5a,
+    base_tile=fold5a.T1,
     focus=(-0.255, 0.460, 400),
     iterations=5,
-    image_name='svg/fold5.svg',
-    schematic_name='svg/fold5_schematic.svg',
+    image_name='svg/fold5a.svg',
+    schematic_name='svg/fold5a_schematic.svg',
     css="""
 * {
   stroke: black;
@@ -115,13 +115,13 @@ conf5 = Config(
   fill: #a0cb70;
 }""")
 
-conf6 = Config(
-    tileset=fold6,
-    base_tile=fold6.T1,
+conf6a = Config(
+    tileset=fold6a,
+    base_tile=fold6a.T1,
     focus=(-0.25, 0.460, 800),
     iterations=7,
-    image_name='svg/fold6.svg',
-    schematic_name='svg/fold6_schematic.svg',
+    image_name='svg/fold6a.svg',
+    schematic_name='svg/fold6a_schematic.svg',
     css="""
 * {
   stroke: black;
@@ -162,13 +162,13 @@ conf8 = Config(
   fill: #d91a25;
 }""")
 
-conf5n = Config(
-    tileset=fold5n,
-    base_tile=fold5n.T1,
+conf5b = Config(
+    tileset=fold5b,
+    base_tile=fold5b.T1,
     focus=(0, 0, 5),
     iterations=10,
-    image_name='svg/fold5n.svg',
-    schematic_name='svg/fold5n_schematic.svg',
+    image_name='svg/fold5b.svg',
+    schematic_name='svg/fold5b_schematic.svg',
     css="""
 * {
   stroke: black;
@@ -181,13 +181,13 @@ conf5n = Config(
   fill: #D7CEEA;
 }""")
 
-conf6n = Config(
-    tileset=fold6n,
-    base_tile=fold6n.T1,
+conf6b = Config(
+    tileset=fold6b,
+    base_tile=fold6b.T1,
     focus=(0, 0, 12),
     iterations=10,
-    image_name='svg/fold6n.svg',
-    schematic_name='svg/fold6n_schematic.svg',
+    image_name='svg/fold6b.svg',
+    schematic_name='svg/fold6b_schematic.svg',
     css="""
 * {
   stroke: black;
@@ -203,13 +203,13 @@ conf6n = Config(
   fill: #C6C7BC;
 }""")
 
-conf6m = Config(
-    tileset=fold6m,
-    base_tile=fold6m.T4,
+conf6c = Config(
+    tileset=fold6c,
+    base_tile=fold6c.T4,
     focus=(0, 0, 4),
     iterations=9,
-    image_name='svg/fold6m.svg',
-    schematic_name='svg/fold6m_schematic.svg',
+    image_name='svg/fold6c.svg',
+    schematic_name='svg/fold6c_schematic.svg',
     css="""
 * {
   stroke: black;
@@ -252,10 +252,10 @@ conf7 = Config(
 
 conf3.draw()
 conf4.draw()
-conf5.draw()
-conf6.draw()
+conf5a.draw()
+conf6a.draw()
 conf8.draw()
-conf5n.draw()
-conf6n.draw()
-conf6m.draw()
+conf5b.draw()
+conf6b.draw()
+conf6c.draw()
 conf7.draw()
