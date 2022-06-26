@@ -25,6 +25,11 @@
 ![6c-fold](svg/fold6c.svg)
 ![6c-fold](svg/fold6c_schematic.svg)
 
+## 6-fold alt3 [[2]](#2)
+
+![6d-fold](svg/fold6d.svg)
+![6d-fold](svg/fold6d_schematic.svg)
+
 ## 5-fold [[1]](#1)
 
 ![5-fold](svg/fold5a.svg)
