@@ -7,6 +7,7 @@ import fold5b
 import fold6a
 import fold6b
 import fold6c
+import fold6d
 import fold7
 import fold8
 
@@ -157,6 +158,25 @@ conf6c = Config(
 #T4 { fill: #972202; }
 """)
 
+conf6d = Config(
+    tileset=fold6d,
+    base_tile=fold6d.T6,
+    # focus=(.2, -.1, 10),
+    focus=(0, 0, 2),
+    iterations=7,
+    image_name='svg/fold6d.svg',
+    schematic_name='svg/fold6d_schematic.svg',
+    css="""
+* { stroke: black; stroke-width: 0.5px;}
+#T1 { fill: #DB15B9; } 
+#T2 { fill: #18C0EC; } 
+#T3 { fill: #0D3262; } 
+#T4 { fill: #2F5620; } 
+#T5 { fill: #E8F5E1; } 
+#T6 { fill: #4667AD; } 
+""")
+
+
 conf7 = Config(
     tileset=fold7,
     base_tile=fold7.T3,
@@ -179,4 +199,5 @@ conf8.draw()
 conf5b.draw()
 conf6b.draw()
 conf6c.draw()
+conf6d.draw()
 conf7.draw()
