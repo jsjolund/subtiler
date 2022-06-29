@@ -1,16 +1,5 @@
-from math import acos, sin, tan, atan, cos, pi, sqrt
+from math import acos, sin, tan, cos, pi, sqrt
 from tile import Tile
-
-
-def dst(p1, p2): return sqrt(((p1[0]-p2[0])**2)+((p1[1]-p2[1])**2))
-
-
-def dot4(xa, ya, xb, yb): return -acos((xa*xb+ya*yb) /
-                                       (sqrt(xa**2+ya**2)*sqrt(xb**2+yb**2)))
-
-
-def dot(p1, p2): return dot4(p1[0], p1[1], p2[0], p2[1])
-
 
 th = (1+sqrt(5))/2
 alpha = acos(0.5*th)

@@ -1,12 +1,12 @@
 from matrix import Matrix3
 from copy import deepcopy
-import math
+from math import acos, sin, tan, atan, cos, pi, sqrt, inf
 
 def aabb(vec):
-    x_min = math.inf
-    x_max = -math.inf
-    y_min = math.inf
-    y_max = -math.inf
+    x_min = inf
+    x_max = -inf
+    y_min = inf
+    y_max = -inf
     for v in vec:
         if v[0] > x_max:
             x_max = v[0]
@@ -17,6 +17,16 @@ def aabb(vec):
         if v[1] < y_min:
             y_min = v[1]
     return ((x_min, y_min), (x_max, y_max))
+
+def dst(p1, p2): return sqrt(((p1[0]-p2[0])**2)+((p1[1]-p2[1])**2))
+
+
+def dot4(xa, ya, xb, yb): return -acos((xa*xb+ya*yb) /
+                                       (sqrt(xa**2+ya**2)*sqrt(xb**2+yb**2)))
+
+
+def dot(p1, p2): return dot4(p1[0], p1[1], p2[0], p2[1])
+
 
 class Tile:
     def __init__(self, name, vec=[(0, 0)]):

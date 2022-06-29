@@ -1,9 +1,5 @@
-from math import cos, sin, tan, sqrt, pi
-from tile import Tile
-
-
-def dst(p1, p2): return sqrt(((p1[0]-p2[0])**2)+((p1[1]-p2[1])**2))
-
+from math import cos, sin, tan, pi
+from tile import Tile, dst
 
 alpha = pi/7
 
