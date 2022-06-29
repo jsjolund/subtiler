@@ -2,7 +2,7 @@ import multiprocessing as mp
 import svgwrite
 import itertools
 from functools import partial
-
+from tile import aabb
 
 def overlap(amin, amax, bmin, bmax):
     return amin[0] < bmax[0] and amax[0] > bmin[0] and amax[1] > bmin[1] and amin[1] < bmax[1]
@@ -62,10 +62,18 @@ def process(base_tile, substitutions, iterations, image_size):
         poly_maps = pool.map(tiles_to_polygons, subs_tiles)
     return merge_by_id(poly_maps)
 
+def get_aabb(base_tile, substitutions):
+    if len(base_tile.vec) <= 1:
+        v = []
+        for tile in substitutions(base_tile):
+            v.extend(tile.transform())
+        return aabb(v)
+    return base_tile.aabb()
 
-def scale_tile(base_tile, image_size):
+def scale_tile(base_tile, image_size, minmax=None):
     # Center tiles in image and scale to max
-    minmax = base_tile.aabb()
+    if not minmax:
+        minmax = base_tile.aabb()
     xscl = image_size[0] / abs(minmax[1][0] - minmax[0][0])
     yscl = image_size[1] / abs(minmax[1][1] - minmax[0][1])
     scl = min(xscl, yscl)
@@ -84,7 +92,7 @@ def zoom_tile(base_tile, image_size, focus):
 
 
 def draw_image(image_name, image_size, css, base_tile, substitutions, iterations, focus=(0, 0, 1)):
-    base_tile = scale_tile(base_tile, image_size)
+    base_tile = scale_tile(base_tile, image_size, minmax=get_aabb(base_tile, substitutions))
     base_tile = zoom_tile(base_tile, image_size, focus)
     poly_map = process(base_tile, substitutions, iterations, image_size)
 
