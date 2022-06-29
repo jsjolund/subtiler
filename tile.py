@@ -2,9 +2,24 @@ from matrix import Matrix3
 from copy import deepcopy
 import math
 
+def aabb(vec):
+    x_min = math.inf
+    x_max = -math.inf
+    y_min = math.inf
+    y_max = -math.inf
+    for v in vec:
+        if v[0] > x_max:
+            x_max = v[0]
+        if v[0] < x_min:
+            x_min = v[0]
+        if v[1] > y_max:
+            y_max = v[1]
+        if v[1] < y_min:
+            y_min = v[1]
+    return ((x_min, y_min), (x_max, y_max))
 
 class Tile:
-    def __init__(self, name, vec):
+    def __init__(self, name, vec=[(0, 0)]):
         self.vec = vec
         self.name = name
         self.cmb_trans = Matrix3()
@@ -59,20 +74,7 @@ class Tile:
         return self
 
     def aabb(self):
-        x_min = math.inf
-        x_max = -math.inf
-        y_min = math.inf
-        y_max = -math.inf
-        for v in self.transform():
-            if v[0] > x_max:
-                x_max = v[0]
-            if v[0] < x_min:
-                x_min = v[0]
-            if v[1] > y_max:
-                y_max = v[1]
-            if v[1] < y_min:
-                y_min = v[1]
-        return ((x_min, y_min), (x_max, y_max))
+        return aabb(self.transform())
 
     def cpy(self):
         t = Tile(self.name, deepcopy(self.vec))
@@ -80,6 +82,10 @@ class Tile:
         t.trans = self.trans.cpy()
         t.scale = self.scale
         return t
+
+    def set_name(self, name):
+        self.name = name
+        return self
 
     def __getitem__(self, key):
         return self.transform()[key]
