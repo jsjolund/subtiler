@@ -50,6 +50,11 @@
 ![8-fold](svg/fold8.svg)
 ![8-fold](svg/fold8_schematic.svg)
 
+## Penrose [[3]](#3)
+
+![penrose](svg/penrose.svg)
+![penrose](svg/penrose_schematic.svg)
+
 ## References
 
 <a id="1">[1]</a>
@@ -61,3 +66,6 @@ Indagationes Mathematicae, 28(1), pp. 120-131 (2017), [arxiv 1602.00518](https:/
 Nischke, KP., Danzer, L.
 A construction of inflation rules based onn-fold symmetry.
 Discrete Comput Geom 15, 221–236 (1996), [doi BF02717732](https://doi.org/10.1007/BF02717732).
+
+<a id="3">[3]</a>
+[Wikipedia: Penrose tiling](https://en.wikipedia.org/wiki/Penrose_tiling#Deflation_for_P2_and_P3_tilings)
