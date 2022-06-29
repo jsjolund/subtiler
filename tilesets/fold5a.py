@@ -8,7 +8,7 @@ dy = sin(alpha)
 
 T1 = Tile('T1', [(0, 0), (1, 0), (1 + dx, -dy),
           (1 + dx + cos(2*alpha), -dy - sin(2*alpha)), (-dx, -dy)])
-T1 = T1.tra_vec(-0.5, -tan((pi+2*pi/5)/2)*0.5)
+T1.vec = [(v[0]-0.5, v[1]-tan((pi+2*pi/5)/2)*0.5) for v in T1.vec]
 T1.scale = 1/(sin(2*alpha)/sin(beta))
 T1y1 = -0.5/cos((pi-2*pi/5)/2)
 T1y2 = tan((pi+2*pi/5)/2)*0.5

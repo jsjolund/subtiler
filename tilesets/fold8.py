@@ -8,19 +8,19 @@ dy = sin(alpha)
 # Prototile T1
 T1 = Tile('T1', [(dx+1, 0), (dx*2+1, dy), (dx*2+1, dy+1),
                  (dx+1, dy*2+1), (dx, dy*2+1), (0, dy+1), (0, dy), (dx, 0)])
-T1 = T1.tra_vec(-dx-0.5, -dy-0.5)  # Mid point at origin
+T1.vec = [(v[0]-dx-0.5, v[1]-dy-0.5) for v in T1.vec]  # Mid point at origin
 
 # Prototile T2
 T2 = Tile('T2', [(0, dy), (2, dy), (dx+2, 0)])
-T2 = T2.tra_vec(0, -dy)  # Left bottom at origin
+T2.vec = [(v[0], v[1]-dy) for v in T2.vec]  # Left bottom at origin
 
 # Prototile T3
 T3 = Tile('T3', [(0, 1), (1, 0), (1, 1)])
-T3 = T3.tra_vec(0, -1)  # Left bottom at origin
+T3.vec = [(v[0], v[1]-1) for v in T3.vec]  # Left bottom at origin
 
 # Prototile T4
 T4 = Tile('T4', [(0, dy), (dx, 0), (dx+1, 0), (1, dy)])
-T4 = T4.tra_vec(0, -dy)  # Left bottom at origin
+T4.vec = [(v[0], v[1]-dy) for v in T4.vec]  # Left bottom at origin
 
 # Rotation of T1, T2
 xa = 2+dx

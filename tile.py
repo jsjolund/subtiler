@@ -20,13 +20,10 @@ def aabb(vec):
 
 def dst(p1, p2): return sqrt(((p1[0]-p2[0])**2)+((p1[1]-p2[1])**2))
 
-
 def dot4(xa, ya, xb, yb): return -acos((xa*xb+ya*yb) /
                                        (sqrt(xa**2+ya**2)*sqrt(xb**2+yb**2)))
 
-
 def dot(p1, p2): return dot4(p1[0], p1[1], p2[0], p2[1])
-
 
 class Tile:
     def __init__(self, name, vec=[(0, 0)]):
@@ -52,13 +49,6 @@ class Tile:
         self.cmb_trans.mul_left(self.trans)
         self.trans = Matrix3()
         return self
-
-    def tra_vec(self, x, y=0):
-        if type(x) is tuple:
-            y = x[1]
-            x = x[0]
-        res = [(v[0]+x, v[1]+y) for v in self.vec]
-        return Tile(self.name, res)
 
     def flipX(self):
         self.trans.flipX()

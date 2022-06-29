@@ -8,7 +8,7 @@ dy = sin(alpha)
 
 T1 = Tile('T1', [(0, 0), (dx, -dy), (dx + 1, -dy),
           (dx*2+1, 0), (dx + 1, dy), (dx, dy)])
-T1 = T1.tra_vec(-dx-0.5, 0)
+T1.vec = [(v[0]-dx-0.5, v[1]) for v in T1.vec]
 T1.scale = 2/(tan(pi/3)/sin(beta))
 
 T2 = Tile('T2', [(0, 0), (2, 0), (2  +cos(alpha), -sin(alpha))])
