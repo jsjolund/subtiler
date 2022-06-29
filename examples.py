@@ -1,6 +1,6 @@
 import random
 from subtiler import draw_image, draw_schematic
-from tilesets import fold3, fold4, fold5a, fold5b, fold6a, fold6b, fold6c, fold6d, fold7, fold8
+from tilesets import fold3, fold4, fold5a, fold5b, fold6a, fold6b, fold6c, fold6d, fold7, fold8, penrose
 
 
 class Config:
@@ -20,7 +20,6 @@ class Config:
 
     def random_color_css(self):
         css = f"* {{ stroke: black; stroke-width: 0.5px;}}"
-        num_colors = len(self.tileset.tiles)
         for i in range(0, len(self.tileset.tiles)):
             css += f"\n#T{i+1} {{ fill: {self.random_hex()}; }} "
         return css
@@ -154,7 +153,6 @@ conf6c = Config(
 conf6d = Config(
     tileset=fold6d,
     base_tile=fold6d.T6,
-    # focus=(.2, -.1, 10),
     focus=(0, 0, 2),
     iterations=7,
     image_name='svg/fold6d.svg',
@@ -168,7 +166,6 @@ conf6d = Config(
 #T5 { fill: #E8F5E1; } 
 #T6 { fill: #4667AD; } 
 """)
-
 
 conf7 = Config(
     tileset=fold7,
@@ -184,6 +181,23 @@ conf7 = Config(
 #T3 { fill: #465b52; }
 """)
 
+confPenrose = Config(
+    tileset=penrose,
+    base_tile=penrose.C2,
+    focus=(0, 0, 1),
+    iterations=4,
+    image_name='svg/penrose.svg',
+    schematic_name='svg/penrose_schematic.svg',
+    css="""
+* { stroke: black; stroke-width: 0.5px; }
+#T1 { fill: #6C3CC2; } 
+#T2 { fill: #D9F8D2; } 
+#T3 { fill: #E5927E; } 
+#T4 { fill: #E71221; } 
+#T5 { fill: #FFFFFF; } 
+#T6 { fill: #FFFFFF; } 
+""")
+
 conf3.draw()
 conf4.draw()
 conf5a.draw()
@@ -194,3 +208,4 @@ conf6b.draw()
 conf6c.draw()
 conf6d.draw()
 conf7.draw()
+confPenrose.draw()
