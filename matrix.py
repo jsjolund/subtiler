@@ -1,3 +1,6 @@
+from __future__ import annotations
+from cmath import e
+from typing import Union
 import math
 from copy import deepcopy
 
@@ -13,29 +16,29 @@ M22 = 8
 
 # Column major matrix
 class Matrix3:
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self.val)
         
-    def __init__(self):
-        self.val = [0]*9
-        self.tmp = [0]*9
+    def __init__(self) -> None:
+        self.val = [0.0]*9
+        self.tmp = [0.0]*9
         self.idt()
 
-    def cpy(self):
+    def cpy(self) -> Matrix3:
         m = Matrix3()
         m.val = deepcopy(self.val)
         m.tmp = deepcopy(self.tmp)
         return m
 
-    def flipX(self):
+    def flipX(self) -> Matrix3:
         self.val[M11] = -self.val[M11]
         return self
 
-    def flipY(self):
+    def flipY(self) -> Matrix3:
         self.val[M00] = -self.val[M00]
         return self
 
-    def idt(self):
+    def idt(self) -> Matrix3:
         self.val[M00] = 1
         self.val[M10] = 0
         self.val[M20] = 0
@@ -47,12 +50,12 @@ class Matrix3:
         self.val[M22] = 1
         return self
 
-    def mul(self, m):
+    def mul(self, m: Union[list[float], Matrix3]) -> Matrix3:
         val = self.val
-        mval = m
-        if type(m) is Matrix3:
+        if isinstance(m, Matrix3):
             mval = m.val
-
+        else:
+            mval = m
         v00 = val[M00] * mval[M00] + val[M01] * mval[M10] + val[M02] * mval[M20]
         v01 = val[M00] * mval[M01] + val[M01] * mval[M11] + val[M02] * mval[M21]
         v02 = val[M00] * mval[M02] + val[M01] * mval[M12] + val[M02] * mval[M22]
@@ -76,12 +79,12 @@ class Matrix3:
         val[M22] = v22
         return self
     
-    def mul_left(self, m):
+    def mul_left(self, m: Union[list[float], Matrix3]) -> Matrix3:
         val = self.val
-        mval = m
-        if type(m) is Matrix3:
+        if isinstance(m, Matrix3):
             mval = m.val
-
+        else:
+            mval = m
         v00 = mval[M00] * val[M00] + mval[M01] * val[M10] + mval[M02] * val[M20]
         v01 = mval[M00] * val[M01] + mval[M01] * val[M11] + mval[M02] * val[M21]
         v02 = mval[M00] * val[M02] + mval[M01] * val[M12] + mval[M02] * val[M22]
@@ -105,8 +108,8 @@ class Matrix3:
         val[M22] = v22
         return self
 
-    def tra(self, x, y=0):
-        if type(x) is tuple:
+    def tra(self, x: Union[float, tuple[float, float]], y: float=0.0) -> Matrix3:
+        if isinstance(x, tuple):
             y = x[1]
             x = x[0]
         self.tmp[M00] = 1
@@ -123,16 +126,16 @@ class Matrix3:
         self.mul(self.tmp)
         return self
     
-    def scl(self, s):
+    def scl(self, s: float) -> Matrix3:
         self.val[M00] *= s
         self.val[M11] *= s
         return self
     
-    def rot(self, t):
-        if t == 0:
+    def rot(self, radians: float) -> Matrix3:
+        if radians == 0: # TODO
             return self
-        cos = math.cos(t)
-        sin = math.sin(t)
+        cos = math.cos(radians)
+        sin = math.sin(radians)
 
         self.tmp[M00] = cos
         self.tmp[M10] = sin
