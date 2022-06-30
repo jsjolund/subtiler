@@ -1,10 +1,19 @@
 import random
 from subtiler import draw_image, draw_schematic
 from tilesets import fold3, fold4, fold5a, fold5b, fold6a, fold6b, fold6c, fold6d, fold7, fold8, penrose
+from tile import Tile
+from types import ModuleType
 
 
 class Config:
-    def __init__(self, tileset, base_tile, focus, iterations, image_name, schematic_name, css):
+    def __init__(self,
+                 tileset: ModuleType,
+                 base_tile: Tile,
+                 focus: tuple[float, float, float],
+                 iterations: int,
+                 image_name: str,
+                 schematic_name: str,
+                 css: str):
         self.tileset = tileset
         self.base_tile = base_tile
         self.focus = focus
@@ -15,16 +24,16 @@ class Config:
         self.image_size = (600, 600)
         self.schematic_width = (300, 2000)
 
-    def random_hex(self):
+    def random_hex(self) -> str:
         return "#"+''.join([random.choice('ABCDEF0123456789') for _ in range(6)])
 
-    def random_color_css(self):
+    def random_color_css(self) -> str:
         css = f"* {{ stroke: black; stroke-width: 0.5px;}}"
         for i in range(0, len(self.tileset.tiles)):
             css += f"\n#T{i+1} {{ fill: {self.random_hex()}; }} "
         return css
 
-    def draw(self, random_colors=False):
+    def draw(self, random_colors: bool = False) -> None:
         if random_colors:
             self.css = self.random_color_css()
             print(self.css)
@@ -184,8 +193,8 @@ conf7 = Config(
 confPenrose = Config(
     tileset=penrose,
     base_tile=penrose.C2,
-    focus=(0, 0, 3),
-    iterations=10,
+    focus=(0, 0, 1),
+    iterations=8,
     image_name='svg/penrose.svg',
     schematic_name='svg/penrose_schematic.svg',
     css="""
@@ -196,14 +205,14 @@ confPenrose = Config(
 #T4 { fill: #FFFFFF; } 
 """)
 
-# conf3.draw()
-# conf4.draw()
-# conf5a.draw()
-# conf6a.draw()
-# conf8.draw()
-# conf5b.draw()
-# conf6b.draw()
-# conf6c.draw()
-# conf6d.draw()
-# conf7.draw()
+conf3.draw()
+conf4.draw()
+conf5a.draw()
+conf6a.draw()
+conf8.draw()
+conf5b.draw()
+conf6b.draw()
+conf6c.draw()
+conf6d.draw()
+conf7.draw()
 confPenrose.draw()

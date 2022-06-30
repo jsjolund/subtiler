@@ -2,22 +2,24 @@
 
 import sys
 import os
-from PyQt5.QtSvg import QSvgWidget
-from PyQt5.QtWidgets import QApplication
-from PyQt5 import QtCore
-from PyQt5.QtCore import QRectF, QFileSystemWatcher
-from PyQt5.QtGui import QPainter, QColorConstants
+from PyQt5.QtSvg import QSvgWidget                   # type: ignore
+from PyQt5.QtWidgets import QApplication             # type: ignore
+from PyQt5 import QtCore                             # type: ignore
+from PyQt5.QtCore import QRectF, QFileSystemWatcher  # type: ignore
+from PyQt5.QtGui import QPainter, QColorConstants    # type: ignore
+
+from typing import Optional
 
 svg_file = sys.argv[1]
 
 
-class SvgWidget(QSvgWidget):
+class SvgWidget(QSvgWidget):  # type: ignore
 
-    def __init__(self, *args):
+    def __init__(self, *args: Optional[None]):
         QSvgWidget.__init__(self, *args)
         self.setStyleSheet("background-color: white;")
 
-    def paintEvent(self, event):
+    def paintEvent(self, event: Optional[None]) -> None:
         renderer = self.renderer()
         if renderer != None:
             painter = QPainter(self)
@@ -30,15 +32,17 @@ class SvgWidget(QSvgWidget):
             svg_rect = QRectF(0, 0, length, ratio*length)
             renderer.render(painter, svg_rect)
             # Paint over geometry outsize svg boundary
-            svg_below = QRectF(0, svg_rect.bottom(), self.width(), self.height() - svg_rect.bottom())
-            svg_right = QRectF(svg_rect.right(), 0, self.width() - svg_rect.right(), svg_rect.bottom())
+            svg_below = QRectF(0, svg_rect.bottom(), self.width(),
+                               self.height() - svg_rect.bottom())
+            svg_right = QRectF(svg_rect.right(), 0, self.width(
+            ) - svg_rect.right(), svg_rect.bottom())
             painter.fillRect(svg_below, QColorConstants.Black)
             painter.fillRect(svg_right, QColorConstants.Black)
             painter.end()
 
 
-@QtCore.pyqtSlot(str)
-def file_changed(path):
+@QtCore.pyqtSlot(str)  # type: ignore
+def file_changed() -> None:
     if os.path.getsize(svg_file) > 0:
         svg_widget.load(svg_file)
 
