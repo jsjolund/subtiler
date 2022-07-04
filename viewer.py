@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Simple svg viewer which updates image after the file changes
 
 import sys
