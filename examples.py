@@ -38,10 +38,12 @@ class Config:
             self.css = self.random_color_css()
             print(self.css)
         draw_image(self.image_name, self.image_size, self.css, self.base_tile,
-                   self.tileset.substitutions, self.iterations, self.focus).save()
+                   self.tileset.map, self.iterations, self.focus).save()
         print(f'Wrote: {self.image_name}')
+        tiles = list(self.tileset.map.keys())
+        tiles.sort(key=lambda x: x.name)  # type: ignore
         draw_schematic(self.schematic_name, self.schematic_width, self.css,
-                       self.tileset.tiles, self.tileset.substitutions).save()
+                       tiles, self.tileset.map).save()
         print(f'Wrote: {self.schematic_name}')
 
 

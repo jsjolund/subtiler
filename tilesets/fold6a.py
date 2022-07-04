@@ -69,10 +69,8 @@ T3s.append(T1.cpy().tra(T3s[-1][1]).tra((0.5+dx)*T3.scale, 0).scl(T3.scale).push
 T3s.append(T3.cpy().tra(T3s[-1][1]).scl(T3.scale).push())
 T3s.append(T3.cpy().tra(T3s[-2][4]).scl(T3.scale).push())
 
-def substitutions(tile):
-    match tile.name:
-        case 'T1': return T1s
-        case 'T2': return T2s
-        case 'T3': return T3s
-
-tiles = [T1,T2,T3]
+map = {
+    T1: T1s,
+    T2: T2s,
+    T3: T3s,
+}

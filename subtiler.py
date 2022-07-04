@@ -37,12 +37,12 @@ def tiles_to_polygons(tiles: list[Tile]) -> PolygonIdMap:
 
 
 def substitute(input_tiles: list[Tile],
-               substitutions: Callable[[Tile], list[Tile]],
+               substitutions: Dict[Tile, list[Tile]],
                image_size: Vec2i
                ) -> list[Tile]:
     output_tiles = []
     for t in input_tiles:
-        Ts = substitutions(t)
+        Ts = substitutions[t]
         for ts in Ts:
             new_t = ts.cpy().inherit_transform(t)
             aabb = new_t.aabb()
@@ -63,7 +63,7 @@ def merge_by_id(poly_maps: list[PolygonIdMap]) -> PolygonIdMap:
 
 
 def process(base_tile: Tile,
-            substitutions: Callable[[Tile], list[Tile]],
+            substitutions: Dict[Tile, list[Tile]],
             iterations: int,
             image_size: Vec2i) -> PolygonIdMap:
     if iterations == 0:
@@ -82,10 +82,10 @@ def process(base_tile: Tile,
 
 
 def get_aabb(base_tile: Tile,
-             substitutions: Callable[[Tile], list[Tile]]) -> Vec2Pair:
+             substitutions: Dict[Tile, list[Tile]]) -> Vec2Pair:
     if len(base_tile.vec) <= 1:
         v = []
-        for tile in substitutions(base_tile):
+        for tile in substitutions[base_tile]:
             v.extend(tile.transform())
         return aabb(v)
     return base_tile.aabb()
@@ -120,7 +120,7 @@ def draw_image(image_name: str,
                image_size: Vec2i,
                css: str,
                base_tile: Tile,
-               substitutions: Callable[[Tile], list[Tile]],
+               substitutions: Dict[Tile, list[Tile]],
                iterations: int,
                focus: tuple[float, float, float] = (0, 0, 1)) -> Drawing:
     base_tile = scale_tile(base_tile, image_size,
@@ -141,7 +141,7 @@ def draw_schematic(image_name: str,
                    image_size: Vec2i,
                    css: str,
                    tiles: list[Tile],
-                   substitutions: Callable[[Tile], list[Tile]]) -> Drawing:
+                   substitutions: Dict[Tile, list[Tile]]) -> Drawing:
     image = Drawing(image_name, size=image_size)
     image.embed_stylesheet(css)
 
@@ -150,6 +150,9 @@ def draw_schematic(image_name: str,
     dy = 0
     for i in range(0, len(tiles)):
         tile = tiles[i]
+        if len(tile.vec) <= 1:
+            continue
+
         scl0 = int(image_size[0]*tile.scale*0.5)
         scl1 = int(image_size[0]*0.5)
 

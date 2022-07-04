@@ -66,15 +66,11 @@ T6s.extend([t.cpy().tra(T6s1[-1][2]).rot(2*pi/3).push() for t in T6s1])
 T6s.extend([t.cpy().tra(T6s[-1][2]).rot(4*pi/3).push() for t in T6s1])
 T6s.append(T4.cpy().tra(T6s[-1][1]).scl(T6.scale).flipX().push())
 
-
-def substitutions(tile):
-    match tile.name:
-        case 'T1': return T1s
-        case 'T2': return T2s
-        case 'T3': return T3s
-        case 'T4': return T4s
-        case 'T5': return T5s
-        case 'T6': return T6s
-
-
-tiles = [T1, T2, T3, T4, T5, T6]
+map = {
+    T1: T1s,
+    T2: T2s,
+    T3: T3s,
+    T4: T4s,
+    T5: T5s,
+    T6: T6s,
+}

@@ -300,14 +300,12 @@ T7s.append(T7.cpy().tra(T7s[-1][2]).scl(T7.scale).flipX().push())
 T7s.append(T7.cpy().tra(T7s[-1][0]).scl(T7.scale).push())
 T7s.append(T7.cpy().tra(T7s[-2][1]).scl(T7.scale).push())
 
-def substitutions(tile):
-    match tile.name:
-        case 'T1': return T1s
-        case 'T2': return T2s
-        case 'T3': return T3s
-        case 'T4': return T4s
-        case 'T5': return T5s
-        case 'T6': return T6s
-        case 'T7': return T7s
-
-tiles = [T1,T2,T3,T4,T5,T6,T7]
+map = {
+    T1: T1s,
+    T2: T2s,
+    T3: T3s,
+    T4: T4s,
+    T5: T5s,
+    T6: T6s,
+    T7: T7s,
+}

@@ -41,14 +41,11 @@ C2.scale = 1
 C2s = []
 C2s.extend([T4.cpy().tra(0,0).scl(C1.scale).rot(i*2*pi/5).push() for i in range(0,5)])
 
-
-def substitutions(tile):
-    match tile.name:
-        case 'T1': return T1s
-        case 'T2': return T2s
-        case 'T3': return T3s
-        case 'T4': return T4s
-        case 'C1': return C1s
-        case 'C2': return C2s
-
-tiles = [T1, T2, T3, T4]
+map = {
+    T1: T1s,
+    T2: T2s,
+    T3: T3s,
+    T4: T4s,
+    C1: C1s,
+    C2: C2s,
+}

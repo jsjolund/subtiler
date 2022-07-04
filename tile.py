@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Union
+from typing import Union, Any
 from matrix import Matrix3
 from copy import deepcopy
 from math import acos, sqrt, inf
@@ -101,3 +101,9 @@ class Tile:
 
     def __repr__(self) -> str:
         return f'{self.name}: ' + ','.join([f'({v[0]}, {v[1]})' for v in self.transform()])
+
+    def __hash__(self) -> int:
+        return hash(self.name)
+
+    def __eq__(self, obj: Any) -> bool:
+        return isinstance(obj, Tile) and obj.name == self.name
